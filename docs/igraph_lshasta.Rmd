@@ -1,0 +1,246 @@
+---
+title: "igraph test"
+author: "Lucy Andrews"
+date: "9/20/2021"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+# load packages
+suppressPackageStartupMessages({
+  library(tidyverse);
+  library(here);
+  library(sf);
+  library(glue);
+  library(stringr);
+  library(igraph);
+  library(networkD3);
+  library(mapview);
+  mapviewOptions(fgb = FALSE)
+  })
+```
+
+To use this in a watershed, replace the `up_down_df` below with your two-column adjacency/edge dataframe.
+
+Be sure that column headings match (`up`, `down`) or change the names of column headings throughout this script to match your input dataframe.
+
+## Get Flowline Data
+
+```{r getdata}
+# set up two-column edge dataframe
+flowlines <- read_rds(here("data_output/final_flowlines_w_full_nhd_vaa.rds"))
+
+# reduce fields for plotting purposes
+flowlines_map <- flowlines %>% select(id, comid, contains("seq"), hydroseq, gnis_name, areasqkm:divdasqkm, shape_length, streamorde, streamorder_map, streamcalc, geom)
+
+# fix flowlines comid to factor in correct order
+flowlines_map <- flowlines_map %>%
+  mutate(comid_f = factor(as.character(comid),
+                          levels=c(3917198, 3917200, 3917948,
+                                   3917950, 3917244, 3917946)))
+
+# drop sinks (isolated channels)
+sinks <- c(3917228, 3917212, 3917214, 3917218, 3917220,
+           3917960, 3917958, 3917276, 3917278, 3917274, 
+           3917282, 3917284, 3917286, 3917280, 3917268,
+           3917256, 3917250, 3917272, 3917956)
+
+flowlines_map_trim <- flowlines_map %>% 
+  filter(!comid %in% sinks)
+
+mapview(flowlines_map_trim)
+
+```
+
+## Create adjacency matrix
+
+Columns contain vertices and each full row represents an edge (from a vertex to vertex). 
+
+For a watershed, this will be a *to-from* dataframe with hydroseq values associated with nodes. We can use NAs to flag terminal values for ease of comparison with network image, but can be filtered out to create the igraph. This drops vertices that do not compose edges.
+
+### Example Network
+
+```{r getadj-ex}
+# demo
+up_down_df <- tribble(
+  ~up, ~down,
+  "Q", NA,
+  "P", "N",
+  "O", "N",
+  "N", "M",
+  "M", NA,
+  "L", "G",
+  "K", "G",
+  "J", "G",
+  "I", "E",
+  "H", "E",
+  "G", "C",
+  "F", "B",
+  "E", "B",
+  "D", "A",
+  "C", "A",
+  "B", "A",
+  "A", NA,
+  "R", "Q",
+  NA, "P",
+  NA, "O",
+  NA, "L",
+  NA, "K",
+  NA, "J",
+  NA, "I",
+  NA, "H",
+  NA, "F",
+  NA, "D",
+  NA, "R",
+  "S", "T",
+  "T", NA,
+  "R", "S",
+  "U", NA,
+  NA, "U"
+  ) %>%
+  filter(!is.na(up) & !is.na(down))
+
+# tst
+(p <- simpleNetwork(up_down_df, height = "400px", 
+                    width = "400px", 
+                    fontSize = 16, 
+                    fontFamily = "serif",
+                    nodeColour = "darkblue", 
+                    linkColour = "steelblue",
+                    opacity = 0.9, zoom = TRUE, charge = -40))
+```
+
+### Little Shasta Network
+
+```{r getadj-lsh}
+
+library(nhdplusTools)
+
+# get nodes: Start
+starts <- get_node(flowlines_map_trim, "start") %>%
+  mutate(hydroseq=flowlines_map_trim$hydroseq) %>% 
+  arrange(hydroseq) %>% 
+  mutate(us_ord = rev(seq(1:nrow(.))))
+
+# get midpoints
+midpts <- st_point_on_surface(flowlines_map_trim)
+
+mapview(starts, zcol="hydroseq", legend=FALSE,
+        layer.name="Starts") + 
+  mapview(flowlines_map_trim, legend=FALSE) +
+  mapview(flowlines_map) +
+  mapview(midpts, col.regions="green", cex=3)
+
+# get matrix
+up_down_lsh <-
+  midpts %>% st_drop_geometry() %>% 
+  select(up = hydroseq,
+         down = dnhydroseq) %>%
+  # fix the downstream end: 10020426 to NA
+  mutate(down = case_when(
+    up == 10020426 ~ 0, # this is OUTLET
+    TRUE ~ down)) %>% 
+  filter(!is.na(down)) # make sure no NAs
+
+# spur at ds end is: 10135201, penultimate seg: 10020862
+
+# tst
+(p <- simpleNetwork(up_down_lsh, Source = "up", Target = "down", height = "400px", 
+                    width = "400px", 
+                    fontSize = 16, 
+                    fontFamily = "serif",
+                    nodeColour = "darkblue", 
+                    linkColour = "steelblue",
+                    opacity = 0.9, zoom = TRUE, charge = -40))
+
+```
+
+## Identify Termini
+
+Need to update and identify the termini to create the "edges" of the network.
+
+### Upstream Ends
+
+We want to identify the upstream ends, which is where paths stop. To run the other direction (upstream --> downstream), we can change what is considered "upstream" or reverse the `all_simple_paths` call below.
+
+This way of doing it uses an edge data frame, but we could also specify upstream ends if needed, and they don't have to be termini (e.g. you can stop mid-network).
+
+```{r usends}
+
+# this identifies the upstream "ends" (termini)
+upstream_ends <- up_down_lsh %>%
+  filter(!up %in% down) %>%
+  pull(up) %>%
+  unique()
+```
+
+### Downstream Ends
+
+Next we can identify downstream ends. The upstream ends are the places paths stop, so to run the other direction (upstream --> downstream), we can change  what is considered "downstream" or reverse the `all_simple_paths` call below. 
+
+```{r dsends}
+
+downstream_ends <- up_down_lsh %>%
+  filter(!down %in% up) %>%
+  pull(down) %>%
+  unique()
+
+```
+
+## Convert to Matrix
+
+```{r tomatrix}
+
+# turn edge dataframe into matrix for igraph conversion
+up_down_matrix <- up_down_lsh %>%
+  as.matrix()
+
+# convert edge matrix to igraph
+# note that directionality isn't attributed in the igraph object
+# directionality is implicit when paths are created using upstream and downstream ends
+# creating an igraph object without directionality allows for upstream path creation
+test_igraph <- graph_from_edgelist(up_down_matrix, directed = FALSE)
+
+# double check visually
+#plot(test_igraph)
+```
+
+```{r}
+# compute all simple paths between downstream ends and upstream ends
+# and store them in a list of igraph paths
+hold_paths <- lapply(downstream_ends,
+                     function(x) all_simple_paths(test_igraph,
+                                                  from = x,
+                                                  to = upstream_ends))
+
+# unplist igraph paths
+hold_paths <- unlist(hold_paths, recursive = F)
+
+# drop unused information like geodesic attributes from igraph paths
+paths <- lapply(1:length(hold_paths), function(x) as_ids(hold_paths[[x]]))
+
+# turn list of paths into dataframe
+paths_df <- as.data.frame(as.matrix(paths)) %>%
+  magrittr::set_colnames("paths_lst") %>%
+  rowid_to_column(var = "row_id")
+
+# create final dataframe of paths that has
+# changing the `collapse` argument will change the separator in the path strings
+paths_df_clean <- unnest(paths_df, paths_lst) %>%
+  group_by(row_id) %>%
+  mutate(paths_chr = paste0(paths_lst, collapse = " ")) %>%
+  select(row_id, paths_chr) %>%
+  unique() %>%
+  mutate(downstream_end = str_sub(paths_chr, 1, 1),
+         upstream_end = str_sub(paths_chr, -1, -1)) %>%
+  left_join(paths_df, by = "row_id") %>%
+  select(row_id, downstream_end, upstream_end, paths_chr, paths_lst)
+```
+
+
+```{r}
+# take a look at the output dataframe
+paths_df_clean
+```
