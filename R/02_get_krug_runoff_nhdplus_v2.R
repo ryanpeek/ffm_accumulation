@@ -65,7 +65,7 @@ mapview(flowlines_trim,  zcol="comid_ff", legend=FALSE) +
 # see here: https://water.usgs.gov/GIS/metadata/usgswrd/XML/runoff.xml
 
 # read in
-krug <- st_read("data_clean/nhdv2/krug_runoff_avg_ann_1951-1980.e00") %>%
+krug <- st_read("data_clean/krug_runoff_avg_ann_1951-1980.e00") %>%
   st_transform(5070)
 
 st_crs(krug)$epsg
@@ -100,8 +100,7 @@ catch_split <- tst %>%
 mapview(catch_split, zcol="krug") + mapview(krug_crop, zcol="INCHES")
 write_rds(catch_split, file = "data_clean/krug_runoff_little_shasta_sf_poly.rds")
 
-
-catch_split <- read_rds("data_clean/krug_runoff_little_shasta_sf_poly.rds")
+#catch_split <- read_rds("data_clean/krug_runoff_little_shasta_sf_poly.rds")
 
 # Now Apply to Each COMID  -----------------------------------
 
@@ -116,7 +115,7 @@ krug_runoff_csv <- flowlines_trim_10 %>% st_drop_geometry() %>%
   select(COMID=comid, krug_runoff = krug) %>%
   mutate(source = "krug_runoff_avg_ann_1951-1980.e00")
 
-write_csv(krug_runoff_csv, file = "data_output/nhdv2/KRUG_RUNOFF.csv")
+write_csv(krug_runoff_csv, file = "data_clean/nhd_v2/KRUG_RUNOFF.csv")
 
 
 
