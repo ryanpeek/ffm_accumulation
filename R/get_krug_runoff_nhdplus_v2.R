@@ -11,7 +11,7 @@ mapviewOptions(fgb=FALSE)
 
 # FLOWLINES: Get Final Little Shasta FLOWLINE -------------------------------------------
 
-flowlines <- read_rds(here("data_output/final_flowlines_w_full_nhd_vaa.rds"))
+flowlines <- read_rds(here("data_clean/final_flowlines_w_full_nhd_vaa.rds"))
 
 # reduce fields for plotting purposes
 flowlines_trim <- flowlines %>% select(id, comid, contains("seq"), hydroseq, gnis_name, areasqkm:divdasqkm, shape_length, streamorde, streamorder_map, streamcalc, geom)
@@ -51,10 +51,10 @@ mapview(flowlines_trim, zcol="comid_ff", legend=FALSE)
 # # save out
 # write_rds(catch_final, "data_output/08_catch_final_lshasta.rds")
 
-catch_final <- read_rds("data_output/08_catch_final_lshasta.rds")
+catch_final <- read_rds("data_clean/08_catchments_final_lshasta.rds")
 
 mapview(flowlines_trim,  zcol="comid_ff", legend=FALSE) +
-  mapview(catch_final, zcol="comid_c", legend=FALSE)
+  mapview(catch_final, zcol="comid_f", legend=FALSE)
 
 # n=33 unique COMIDs
 (coms <- unique(flowlines_trim$comid))
@@ -65,7 +65,7 @@ mapview(flowlines_trim,  zcol="comid_ff", legend=FALSE) +
 # see here: https://water.usgs.gov/GIS/metadata/usgswrd/XML/runoff.xml
 
 # read in
-krug <- st_read("data_output/nhdv2/krug_runoff_avg_ann_1951-1980.e00") %>%
+krug <- st_read("data_clean/nhdv2/krug_runoff_avg_ann_1951-1980.e00") %>%
   st_transform(5070)
 
 st_crs(krug)$epsg
@@ -94,12 +94,14 @@ tst <- lwgeom::st_split(catch_diss, krug_crop)
 # now make into polygons
 catch_split <- tst %>%
   st_collection_extract(c("POLYGON")) %>%
-  mutate(krug=c(10,5,0,0)) %>%
-  filter(krug>0)
+  dplyr::mutate(krug=c(10,5)) %>%
+  dplyr::filter(krug>0)
 
 mapview(catch_split, zcol="krug") + mapview(krug_crop, zcol="INCHES")
-write_rds(catch_split, file = "data_output/krug_runoff_little_shasta_sf_poly.rds")
+write_rds(catch_split, file = "data_clean/krug_runoff_little_shasta_sf_poly.rds")
 
+
+catch_split <- read_rds("data_clean/krug_runoff_little_shasta_sf_poly.rds")
 
 # Now Apply to Each COMID  -----------------------------------
 

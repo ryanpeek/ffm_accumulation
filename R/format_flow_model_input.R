@@ -11,7 +11,7 @@ library(fs)
 
 # Read In Files -----------------------------------------------------------
 
-dat_dir <- here("data_output/")
+dat_dir <- here("data_clean/")
 dir_exists(dat_dir)
 
 files_to_get <- list.files(path = dat_dir, pattern = "^little_shasta_.*\\.csv$")
@@ -23,7 +23,7 @@ alldat <- tst %>% reduce(left_join, by = c("COMID")) %>% # join by COMID
   # drop dup columns
   select(-c(ends_with(".x"), contains("NODATA"), starts_with("source"))) %>%
   clean_names() %>%
-  rename(sid=id_y) %>%
+  rename(sid=id) %>%
   # drop dup cols:
   select(-c(starts_with("x"), starts_with("id")))
 
