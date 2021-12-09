@@ -52,6 +52,7 @@ catch_final <- read_rds("data_clean/08_catchments_final_lshasta.rds")
 # n=33 unique COMIDs
 (coms <- unique(flowlines_trim$comid))
 
+write_rds(coms, file = "data_clean/comid_list.rds")
 # Set up Directories & Files ----------------------------------------------
 
 # main directory
@@ -91,3 +92,5 @@ f_extract_filter_to_comids(subdir = subdirs[8], comids = coms, outdir = "data_cl
 
 # geology breaks bc of soller zip?
 #f_extract_filter_to_comids(subdir = subdirs[3], comids = coms, outdir = "data_clean/nhd_v2")
+
+

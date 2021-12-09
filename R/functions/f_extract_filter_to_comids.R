@@ -1,10 +1,10 @@
 # extract data from NHD and filter to comids
 # relies on f_functions
 
-f_extract_filter_to_comids <- function(subdir, comids, outdir){
+f_extract_filter_to_comids <- function(subdir, comids, outdir, recurse=FALSE){
   print(glue("working on {subdir}"))
   # look for zips here
-  ziplist <- get_zip_list(glue("{subdir}"), "*zip")
+  ziplist <- get_zip_list(glue("{subdir}"), "*zip", recurse)
 
   # Filter to Comids --------------------------------------------------------
 
@@ -47,6 +47,6 @@ f_extract_filter_to_comids <- function(subdir, comids, outdir){
     select(-c(ends_with(".x"), contains("NODATA"), starts_with("source")))
 
   # write out
-  write_csv(alldat_combine, file = glue("data_clean/little_shasta_{janitor::make_clean_names(fs::path_file(subdir))}_comids_v2.csv"))
+  write_csv(alldat_combine, file = glue("{outdir}/{janitor::make_clean_names(fs::path_file(subdir))}_data_merged_by_comids.csv"))
 
 }

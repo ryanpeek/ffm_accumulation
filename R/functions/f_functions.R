@@ -9,16 +9,20 @@
 #' @export
 #' @example get_zip_list(glue("{dat_dir}/{subfold_dir}"), "*zip")
 
-get_zip_list <- function(folder, extension){
+get_zip_list <- function(folder, extension, recurse=FALSE){
   library(dplyr)
   library(fs)
   library(glue)
-  fs::dir_info(folder, recurse = TRUE,
+
+  fs::dir_info(folder,
                type = "file",
-               regexp = glue::glue("{extension}")) %>%
+               regexp = glue::glue("{extension}"),
+               recurse = recurse) %>%
     dplyr::select(path, size) %>%
     dplyr::mutate(filename = fs::path_file(path))
 }
+
+
 
 # comid_filter ----------------------------------
 
@@ -32,9 +36,13 @@ get_zip_list <- function(folder, extension){
 comid_filter <- function(comids, fullpath){
   library(purrr)
   library(vroom)
-  f1 <- vroom(fullpath) %>% # fast readin of zips
+  library(glue)
+  library(fs)
+  print(glue("Reading {path_file(fullpath)}"))
+  f1 <- vroom(fullpath, show_col_types = FALSE) %>% # fast readin of zips
     dplyr::rename_with(., toupper) %>%
     dplyr::filter({if("COMID" %in% names(.)) COMID else NULL} %in% comids)
+  return(f1)
 }
 
 # comid_writeout ----------------------------------
