@@ -1,5 +1,6 @@
 # ScienceBase tools
 # tutorial here: https://owi.usgs.gov/R/training-curriculum/usgs-packages/sbtools-discovery/
+
 library(sbtools)
 library(readr)
 library(purrr)
@@ -92,11 +93,12 @@ unique(xml_df$metadata_id)
 
 
 source("R/functions/f_functions.R")
-source("R/functions/f_extract_filter_to_comids.R")
+source("R/functions/f_extract_filter_to_comids_single.R")
 
 # get coms
 comids <- read_rds("data_clean/comid_list.rds")
 subdir <- "data_raw/scibase_flow/"
+outdir <- "data_clean/scibase_flow"
 
 # tst
 file_list <- get_zip_list(glue("{subdir}"), "*zip", recurse = FALSE)
@@ -104,69 +106,26 @@ file_list <- get_zip_list(glue("{subdir}"), "*zip", recurse = FALSE)
 # extract
 #f_extract_filter_to_comids(subdir = data_dir, comids = coms, outdir = "data_clean/flow_nhd_v2", recurse = FALSE)
 
-print(glue("working on {subdir}"))
-
-# look for zips here
-ziplist <- get_zip_list(glue("{subdir}"), "*zip", recurse = FALSE)
-
-# Filter to Comids --------------------------------------------------------
-
-print(glue("reading in zips and filtering to comids of interest..."))
-
-# subset to 50 files to see if this works
-n <- 20
-(n <- nrow(ziplist))
-
-# filter to comids
-alldat <- map(ziplist$path[1:n], ~comid_filter(comids, .x))
-
-
-# use this to read in and print at same time
-# alldat <- map2(ziplist$path[1:n], ziplist$path[1:n], ~{
-#   # print file
-#   print(glue("Reading {path_file(.y)}"))
-#   comid_filter(comids, .x)
-# })
-
+alldat <- map(file_list$path,
+    ~f_extract_filter_to_comids(.x, comids = comids,
+                                outdir = outdir))
 
 # check dimensions (one way to filter out zeros)
 map(alldat, ~nrow(.x)>0) # all items have >0 rows if TRUE
 
-# set names using ziplist
-alldat_src <- alldat %>%
-  # sets list names to filename
-  set_names(fs::path_ext_remove(ziplist$filename[1:n])) %>%
-  # adds a "source" column with filename
-  imap(., ~ add_column(.x, source = .y))
-
-names(alldat_src) # check
-
-# check source in everything?
-map_depth(alldat_src, .depth = 1, ~head(.x))
-
 # Drop Zero Data --------------------------------------------------------------
 
 # drop data with zero rows
-alldat_filt <- discard( alldat_src, ~nrow(.x)==0)
-
-# Write each file to single csv -----------------------------------------------
-print("Writing out files")
-# use names of list to make filenames
-
-outdir <- "data_clean/flow_nhd_v2"
-
-fs::dir_create(outdir)
-pmap(list(alldat_filt, outdir, names(alldat_filt)),
-     ~comid_writeout(..1, ..2, ..3))
+alldat <- discard(alldat, ~nrow(.x)==0)
 
 # Save into one file ------------------------------------------------------
 
-alldat_combine <- alldat_filt %>%
+alldat_combine <- alldat %>%
   reduce(left_join, by = c("COMID")) %>% # join by COMID
   # drop dup columns
   select(-c(ends_with(".x"), contains("NODATA"), starts_with("source")))
 
 # write out
-write_csv(alldat_combine, file = glue("{outdir}/{janitor::make_clean_names(fs::path_file(subdir))}_data_merged_by_comids.csv"))
+write_csv(alldat_combine, file = glue("{outdir}/scibase_data_merged_by_comids.csv"))
 
 

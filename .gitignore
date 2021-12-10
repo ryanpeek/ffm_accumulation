@@ -43,3 +43,4 @@ vignettes/*.pdf
 
 # scibase
 data_raw/scibase_flow/*
+data_clean/scibase_flow/*
