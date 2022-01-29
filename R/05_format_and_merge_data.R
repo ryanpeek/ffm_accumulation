@@ -4,7 +4,6 @@
 
 library(purrr)
 library(tidyverse)
-library(vroom)
 library(janitor)
 library(glue)
 library(here)
@@ -41,22 +40,21 @@ dat_files <- bind_rows(ppt_files, tav_files, run_files)
 # Combine -----------------------------------------------------------------
 
 # use purrr to read all in and combine?
-cat_dat <- map(dat_files$path, ~vroom(.x, show_col_types = FALSE))
+cat_dat <- map(dat_files$path, ~read_csv(.x, show_col_types = FALSE))
+cat_dat <- map(cat_dat, ~select(.x, (COMID:filename))) %>%
+  map(~select(.x, -c(filename)))
 
-# bind together
-alldat <- tst %>% reduce(left_join, by = c("COMID")) %>% # join by COMID
-  # drop dup columns
-  select(-c(ends_with(".x"), contains("NODATA"), starts_with("source"))) %>%
-  clean_names() %>%
-  rename(sid=id) %>%
-  # drop dup cols:
-  select(-c(starts_with("x"), starts_with("id")))
+map(cat_dat, ~names(.x))
+map(cat_dat, ~dim(.x))
+map(cat_dat, ~class(.x))
+map(cat_dat, ~pluck(.x, "COMID")) %>% map(., ~class(.x))
 
-dall <- names(alldat) %>% as_tibble() %>% rename("all"=value)
+# bind together (THIS BREAKS IF USING VROOM TO READ IN!!..weird)
+cat_df <- cat_dat %>% reduce(left_join, by="COMID") # by="COMID"
+
+dall <- names(cat_df) %>% as_tibble()
 
 # write out
-write_csv(alldat_combine, file = glue("{outdir}/scibase_data_merged_by_comids.csv"))
-
 write_csv(dall, file="data_clean/lsh_scibase_var_names.csv")
 
 # Read in Example Input for Models ----------------------------------------
@@ -66,18 +64,6 @@ input_sample <- read_csv("data_raw/sample.csv") %>%
 
 dsel <- names(input_sample) %>% as_tibble() %>% rename("input"=value)
 View(dsel)
-
-write_csv(dsel, file="data_clean/lsh_sample_input_var_names.csv")
-
-# Compare column names ----------------------------------------------------
-
-filter(dsel, input %in% dall$all) # only two??
-# all names are slightly_diff...of course
-
-# Write it Out ------------------------------------------------------------
-
-write_csv(alldat, file="data_clean/lsh_scibase_vars.csv")
-write_rds(alldat, file="data_clean/lsh_scibase_vars.rds")
 
 
 
