@@ -82,14 +82,9 @@ cat_df_seas <- cat_df_long %>%
          seas_pwy = sum(value_pwy)) %>%
   ungroup()
 
-# TBD ---------------------------------------------------------------------
-
-## quarterly sum: sum1/sum2/sum3/sum4???
-## ask Ted
-
 # Now Pivot Wide Again to Match Model Input -------------------------------
 
-clim_metrics_wy <- cat_df_seas %>%
+cat_metrics_wy <- cat_df_seas %>%
   pivot_wider(id_cols = c(comid, comid_wy, wa_yr),
               names_from = c(metric, month),
               names_glue = "{metric}_{month}_{.value}",
@@ -108,10 +103,10 @@ clim_metrics_wy <- cat_df_seas %>%
          tav_ann_pwy = tav_apr_ann_pwy
          )
 
-names(clim_metrics_wy)
+names(cat_metrics_wy)
 
 # now do same for seas!
-clim_seas_wy <- cat_df_seas %>%
+cat_seas_wy <- cat_df_seas %>%
   select(comid:wa_yr, metric, season, seas_wy, seas_pwy) %>%
   distinct(.keep_all = TRUE) %>%
   pivot_wider(id_cols = c(comid, comid_wy, wa_yr),
@@ -121,19 +116,45 @@ clim_seas_wy <- cat_df_seas %>%
   rename_with(tolower) %>%
   rename_with(., ~gsub("_seas_wy$", "_wy", .x, perl = TRUE)) %>%
   rename_with(., ~gsub("_seas_pwy", "_pwy", .x))
-names(clim_seas_wy)
+names(cat_seas_wy)
 
-# Join and Match Names ----------------------------------------------------
+# Join and add Quarterly sums -----------------------------------------------
 
-clim_df_full <- left_join(clim_metrics_wy, clim_seas_wy) %>%
-  select(any_of(names(input_sample))) # match col order in sample input
+clim_df_full <- left_join(cat_metrics_wy, cat_seas_wy) %>%
+  ## add quarterly sums: sum1/sum2/sum3/sum4
+  #sum1 <- ann_wy + ann_pwy
+  #sum2 <- ann_wy + summ_pwy
+  #sum3 <- ann_wy + sprg_pwy
+  #sum4 <- ann_wy + wint_pwy
+  mutate(ppt_sum1 = ppt_ann_wy + ppt_ann_pwy,
+         ppt_sum2 = ppt_ann_wy + ppt_summ_pwy,
+         ppt_sum3 = ppt_ann_wy + ppt_sprg_pwy,
+         ppt_sum4 = ppt_ann_wy + ppt_wint_pwy,
+         #tav
+         tav_sum1 = tav_ann_wy + tav_ann_pwy,
+         tav_sum2 = tav_ann_wy + tav_summ_pwy,
+         tav_sum3 = tav_ann_wy + tav_sprg_pwy,
+         tav_sum4 = tav_ann_wy + tav_wint_pwy,
+         #run
+         run_sum1 = run_ann_wy + run_ann_pwy,
+         run_sum2 = run_ann_wy + run_summ_pwy,
+         run_sum3 = run_ann_wy + run_sprg_pwy,
+         run_sum4 = run_ann_wy + run_wint_pwy)
+
 names(clim_df_full)
 
+# Match Names -------------------------------------------------------------
+
+clim_final <- clim_df_full %>%
+  select(any_of(names(input_sample))) # match col order in sample input
+names(clim_final)
+
+janitor::compare_df_cols(clim_df_full, clim_final) # dropped the fall, oct/nov/dec pwy vars
 
 # WRITE IT OUT!! ----------------------------------------------------------
 
-write_csv(clim_df_full, file = "data_clean/06_seas_prism_metrics_for_mod.csv")
-write_rds(clim_df_full, file = "data_clean/06_seas_prism_metrics_for_mod.rds")
+write_csv(clim_final, file = "data_clean/06_seas_prism_metrics_for_mod.csv")
+write_rds(clim_final, file = "data_clean/06_seas_prism_metrics_for_mod.rds")
 
 
 # ARCHIVED Calc Monthly: All Years ----------------------------------------------------
