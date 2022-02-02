@@ -14,10 +14,10 @@ mapviewOptions(fgb=FALSE)
 flowlines <- read_rds(here("data_clean/final_flowlines_w_full_nhd_vaa.rds"))
 
 # reduce fields for plotting purposes
-flowlines_trim <- flowlines %>% select(id, comid, contains("seq"), hydroseq, gnis_name, areasqkm:divdasqkm, shape_length, streamorde, streamorder_map, streamcalc, geom)
+flowlines <- flowlines %>% select(id, comid, contains("seq"), hydroseq, gnis_name, areasqkm:divdasqkm, shape_length, streamorde, streamorder_map, streamcalc, geom)
 
 # fix flowlines comid to factor in correct order
-flowlines_trim <- flowlines_trim %>%
+flowlines <- flowlines %>%
   mutate(comid_f = factor(as.character(comid),
                           levels=c(3917198, 3917200, 3917948,
                                    3917950, 3917244, 3917946)),
@@ -29,29 +29,18 @@ sinks <- c(3917228, 3917212, 3917214, 3917218, 3917220,
            3917282, 3917284, 3917286, 3917280, 3917268,
            3917256, 3917250, 3917272, 3917956)
 
-flowlines_trim <- flowlines_trim %>%
+flowlines_trim <- flowlines %>%
   filter(!comid %in% sinks)
 
 # preview
 mapview(flowlines_trim, zcol="comid_ff", legend=FALSE)
-
+mapview(flowlines, zcol="comid_ff", legend=FALSE)
 
 # Get CATCHMENTS ----------------------------------------------------------
 
 # updated catchment areas # catch_final, df_catch_diss, df_da_final, df_coms (all attribs, n=142)
-# load(here("data_output/06_catcharea_final_adjust.rda"))
-#
-# rm(df_catch_rev, df_catch_diss, df_da_final)
-#
-# # make comid char for plotting
-# catch_final <- catch_final %>%
-#   mutate(comid_c = as.factor(comid),
-#          upper = if_else(is.na(comid_f), TRUE, FALSE))
-#
-# # save out
-# write_rds(catch_final, "data_output/08_catch_final_lshasta.rds")
 
-catch_final <- read_rds("data_clean/08_catchments_final_lshasta.rds")
+catch_final <- read_rds("data_clean/catchments_final_lshasta.rds")
 
 mapview(flowlines_trim,  zcol="comid_ff", legend=FALSE) +
   mapview(catch_final, zcol="comid_f", legend=FALSE)
@@ -98,6 +87,7 @@ catch_split <- tst %>%
   dplyr::filter(krug>0)
 
 mapview(catch_split, zcol="krug") + mapview(krug_crop, zcol="INCHES")
+
 write_rds(catch_split, file = "data_clean/krug_runoff_little_shasta_sf_poly.rds")
 
 #catch_split <- read_rds("data_clean/krug_runoff_little_shasta_sf_poly.rds")
@@ -115,7 +105,7 @@ krug_runoff_csv <- flowlines_trim_10 %>% st_drop_geometry() %>%
   select(COMID=comid, krug_runoff = krug) %>%
   mutate(source = "krug_runoff_avg_ann_1951-1980.e00")
 
-write_csv(krug_runoff_csv, file = "data_clean/nhd_v2/KRUG_RUNOFF.csv")
+write_csv(krug_runoff_csv, file = "data_clean/scibase_flow/KRUG_RUNOFF.csv")
 
 
 

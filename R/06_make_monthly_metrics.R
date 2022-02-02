@@ -195,4 +195,6 @@ write_rds(clim_final, file = "data_clean/06_seas_prism_metrics_for_mod.rds")
 #                 ~avg_month(month = .x, var = .y, df = cat_df)) %>%
 #   reduce(left_join, by="comid")
 #
+#ppt_files <- filter(clean_list, grepl("(?=.*ppt)(?=.*cat)", x = filename, perl=TRUE, ignore.case = TRUE))
+
 
