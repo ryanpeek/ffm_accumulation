@@ -21,22 +21,53 @@ clean_list <- get_zip_list(glue("{dat_dir}"), "*csv", recurse = FALSE)
 head(clean_list)
 
 # get xwalk from google drive
-xwalk <- readxl::read_xlsx("data_raw/gsheet_input_var_name_xwalk.xlsx", sheet = 1)
+xwalk <- readxl::read_xlsx("data_raw/gsheet_input_var_name_xwalk.xlsx", sheet = 1) %>%
+  clean_names() %>%
+  # drop vars not in model
+  slice(-c(263:270))
+
+# get updated xwalk (manually created)
+xwalk_rev <- read_csv("data_clean/07_model_input_dat_out_xwalk.csv")
 
 # get clim data
 clim_final <- read_rds("data_clean/06_seas_prism_metrics_for_mod.rds")
 
+
 # Model Input -------------------------------------------------------------
 
 # model input
-input_sample <- read_csv("data_raw/sample.csv") %>%
+input_sample_clean <- read_csv("data_raw/sample.csv") %>%
   clean_names()
 
-input_names <- names(input_sample) %>% as_tibble() %>% rename("input"=value)
-write_csv(input_names, file = "data_clean/07_model_input_metric_names_only.csv")
+input_sample <- read_csv("data_raw/sample.csv")
+
+input_sample_clean_names <- names(input_sample_clean) %>% as_tibble() %>% rename("input"=value)
+#write_csv(input_sample_clean_names, file = "data_clean/07_model_input_metric_names_only.csv")
+
+input_sample_names <- names(input_sample) %>% as_tibble() %>% rename("input"=value)
+
+# bind names and use to xwalk back to original model input/output names
+input_mod_xwalk <- cbind(input_sample_names, input_sample_clean_names) %>%
+  rename(mod_names=1, mod_names_clean = 2)
+
+# Join Xwalks -------------------------------------------------------------
+
+xwalk_join <- left_join(xwalk, xwalk_rev, by=c("model_input"="MOD_IN")) %>%
+  #clean
+  select(model_input, dat_output=DAT_OUT, check=CHECK,
+         variable_description, accum_op = accumulation_operation, source_file) %>%
+  # now join with original sample model input names
+  left_join(input_mod_xwalk, by=c("model_input"="mod_names_clean")) %>%
+  select(model_input_clean=model_input, mod_input_raw=mod_names, dat_output:source_file)
+
+#write_csv(xwalk_join, "data_clean/07_final_xwalk_variables.csv")
+
+rm(xwalk, xwalk_rev, input_mod_xwalk, input_sample, input_sample_clean, input_sample_clean_names, input_sample_names)
+
 # Get Files Of Interest ---------------------------------------------------
 
-files_needed <- xwalk %>% select(source_file) %>%
+# first pull the non prism data:
+files_needed <- xwalk_join %>% select(source_file) %>%
   filter(!is.na(source_file)) %>% distinct() %>%
   mutate(filepath = glue("{dat_dir}/{source_file}"))
 
@@ -47,16 +78,7 @@ dat <- map(files_needed$filepath,
   select(-c(starts_with("filename"), contains("NODATA"), source)) %>%
   clean_names()
 
-#write_csv(dat, file = "data_clean/07_non_prism_metrics_for_mod.csv")
-
-# make just names
-dat_names <- names(dat) %>% as_tibble() %>% rename("input"=value)
-
-write_csv(dat_names, file = "data_clean/07_non_prism_metric_names_only.csv")
-
 # Need to Calc Elev Vars --------------------------------------------------
-
-# model input needs this
 
 #drain_sqkm
 #slope_pct_30m
@@ -72,31 +94,65 @@ write_csv(dat_names, file = "data_clean/07_non_prism_metric_names_only.csv")
 # cat_elev_max
 # cat_stream_length
 
-
-dat_rev <- dat %>%
-  mutate(elv_rng = cat_elev_max-cat_elev_min) %>%
-  rename(
-    drain_sqkm = cat_basin_area,
-    slope_pct_30m = cat_basin_slope,
-    elev_mean_m_basin_30m = cat_elev_mean,
-    elev_min_m_basin_30m = cat_elev_min,
-    elev_max_m_basin_30m = cat_elev_max)
-
+# make slope/elev as above
+dat <- dat %>%
+  mutate(elv_rng = cat_elev_max-cat_elev_min, .after="cat_elev_max")
 
 # Join ALL ----------------------------------------------------------------
 
-dat_final <- left_join(clim_final, dat_rev, by="comid")
+# now add prism data for full dataset
+dat_final <- left_join(clim_final, dat, by="comid")
+names(dat_final) # still lots of additional vars
+
+rm(clim_final, dat)
 
 # Select Vars of Interest -------------------------------------------------
 
 # now select?
 dat_sel <- dat_final %>%
-  select(any_of(names(input_sample)))
+  select(any_of(xwalk_join$dat_output))
 
-# things don't match up...need to fix or no?
-
+# two duplicates here:
+xwalk_join %>% filter(duplicated(xwalk_join$dat_output))
+# cat_minp6190
+# cat_wtdep
 
 # Write Out ---------------------------------------------------------------
 
-write_csv(dat_final, file = "data_clean/07_final_catch_metrics_for_accum.csv")
+write_csv(dat_sel, file = "data_clean/07_final_catchment_data_for_accum.csv")
 
+
+# View COMIDS? ------------------------------------------------------------
+
+
+library(mapview)
+mapviewOptions(fgb = FALSE)
+
+flowlines <- read_rds("data_clean/final_flowlines_w_full_nhd_vaa.rds") %>%
+  select(id:comid, gnis_name:reachcode, ftype:fcode, fromnode:dnhydroseq, ends_with("km"), geom)
+#mapview(flowlines)
+length(unique(flowlines$comid)) # n=52 w isolated segments
+
+# drop sink/isolated segments
+sinks <- c(3917228, 3917212, 3917214, 3917218, 3917220,
+           3917960, 3917958, 3917276, 3917278, 3917274,
+           3917282, 3917284, 3917286, 3917280, 3917268,
+           3917256, 3917250, 3917272, 3917956)
+
+flowlines_trim <- flowlines %>%
+  filter(comid %in% sinks)
+
+# get catchments
+catchments_final_lshasta <- read_rds("data_clean/catchments_final_lshasta.rds")
+
+# map
+mapview(catchments_final_lshasta, col.regions="skyblue", color="dodgerblue",
+        alpha.regions=0.1, alpha=0.5,
+        layer.name="Catchments <br>trimmed to H10") +
+  mapview(flowlines, color="steelblue", lwd=2, layer.name="Flowlines") +
+  mapview(flowlines_trim, color="yellow", lwd=1, layer.name="Sinks to Drop")
+
+
+# map of hydroseq ID
+flow_hydroseq <- flowlines %>% select(comid, hydroseq, uphydroseq, dnhydroseq, areasqkm, totdasqkm, divdasqkm)
+mapview(flow_hydroseq, zcol = "hydroseq", layer.name="Hydroseq")
