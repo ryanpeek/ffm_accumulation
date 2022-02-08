@@ -121,38 +121,3 @@ xwalk_join %>% filter(duplicated(xwalk_join$dat_output))
 
 write_csv(dat_sel, file = "data_clean/07_final_catchment_data_for_accum.csv")
 
-
-# View COMIDS? ------------------------------------------------------------
-
-
-library(mapview)
-mapviewOptions(fgb = FALSE)
-
-flowlines <- read_rds("data_clean/final_flowlines_w_full_nhd_vaa.rds") %>%
-  select(id:comid, gnis_name:reachcode, ftype:fcode, fromnode:dnhydroseq, ends_with("km"), geom)
-#mapview(flowlines)
-length(unique(flowlines$comid)) # n=52 w isolated segments
-
-# drop sink/isolated segments
-sinks <- c(3917228, 3917212, 3917214, 3917218, 3917220,
-           3917960, 3917958, 3917276, 3917278, 3917274,
-           3917282, 3917284, 3917286, 3917280, 3917268,
-           3917256, 3917250, 3917272, 3917956)
-
-flowlines_trim <- flowlines %>%
-  filter(comid %in% sinks)
-
-# get catchments
-catchments_final_lshasta <- read_rds("data_clean/catchments_final_lshasta.rds")
-
-# map
-mapview(catchments_final_lshasta, col.regions="skyblue", color="dodgerblue",
-        alpha.regions=0.1, alpha=0.5,
-        layer.name="Catchments <br>trimmed to H10") +
-  mapview(flowlines, color="steelblue", lwd=2, layer.name="Flowlines") +
-  mapview(flowlines_trim, color="yellow", lwd=1, layer.name="Sinks to Drop")
-
-
-# map of hydroseq ID
-flow_hydroseq <- flowlines %>% select(comid, hydroseq, uphydroseq, dnhydroseq, areasqkm, totdasqkm, divdasqkm)
-mapview(flow_hydroseq, zcol = "hydroseq", layer.name="Hydroseq")
