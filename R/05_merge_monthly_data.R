@@ -56,6 +56,7 @@ write_csv(dall, file="data_clean/lsh_scibase_var_names.csv")
 
 write_rds(cat_df, file = "data_clean/05_lsh_scibase_mon_raw_ppt_tav_run.rds")
 
+# DONE! Move to 06 to calc monthly metrics
 
 # ARCHIVED Calc Monthly: All Years ----------------------------------------------------
 

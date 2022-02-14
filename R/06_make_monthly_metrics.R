@@ -26,8 +26,7 @@ input_sample <- read_csv("data_raw/sample.csv") %>%
 input_names <- names(input_sample) %>% as_tibble() %>% rename("input"=value)
 
 # this is from google drive
-xwalk <- readxl::read_xlsx("data_raw/gsheet_input_var_name_xwalk.xlsx", sheet = 1)
-
+xwalk <- readxl::read_xlsx("data_raw/gsheet_input_var_name_xwalk.xlsx", sheet = 2)
 
 # Make Long ---------------------------------------------------------------
 
@@ -42,6 +41,7 @@ cat_df_long <- cat_df %>%
                names_pattern = "CAT_([[:alpha:]]{3})_([[:alpha:]]{3})([[:digit:]]{4})",
                values_to = "value") %>%
   janitor::clean_names() %>%
+  # fix names to reflect sample model needs
   mutate("comid_wy" = glue("{comid}_{wa_yr}"), .after="comid",
          "wa_yr" = as.integer(wa_yr),
          var_mon_wy = tolower(glue("{metric}_{month}_wy"))) %>%
@@ -147,9 +147,13 @@ names(clim_df_full)
 
 clim_final <- clim_df_full %>%
   select(any_of(names(input_sample))) # match col order in sample input
+
+# check names
 names(clim_final)
 
-janitor::compare_df_cols(clim_df_full, clim_final) # dropped the fall, oct/nov/dec pwy vars
+# check names
+janitor::compare_df_cols(clim_df_full, clim_final)
+## dropped the fall, oct/nov/dec pwy vars, n=117 vs. n=105
 
 # WRITE IT OUT!! ----------------------------------------------------------
 
