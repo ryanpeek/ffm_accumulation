@@ -14,8 +14,11 @@ source("R/functions/f_extract_filter_to_comids_single.R")
 
 # Now Aggegrate -----------------------------------------------------------
 
-# get coms
-comids <- read_rds("data_clean/comid_list.rds")
+# get comids (comid_catch)
+comids <- read_csv("data_clean/08_catch_areas_filt_comid.csv") %>%
+  pull(comid_catch)
+
+# set up data
 subdir <- "data_raw/scibase_flow/"
 outdir <- "data_clean/scibase_flow"
 
@@ -31,7 +34,7 @@ alldat <- map(file_list$path,
                                 outdir = outdir))
 
 # check dimensions (one way to filter out zeros)
-map(alldat, ~nrow(.x)>0) # all items have >0 rows if TRUE
+sum(unlist(map(alldat, ~nrow(.x)>0))) # all items have >0 rows if TRUE
 
 # Drop Zero Data --------------------------------------------------------------
 

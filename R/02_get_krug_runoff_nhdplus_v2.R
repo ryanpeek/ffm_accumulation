@@ -9,32 +9,40 @@ library(here)
 library(mapview)
 mapviewOptions(fgb=FALSE)
 
-# FLOWLINES: Get Final Little Shasta FLOWLINE -------------------------------------------
 
-flowlines <- read_rds(here("data_clean/final_flowlines_w_full_nhd_vaa.rds"))
+# Get COMIDs --------------------------------------------------------------
 
-# reduce fields for plotting purposes
-flowlines <- flowlines %>% select(id, comid, contains("seq"), hydroseq, gnis_name, areasqkm:divdasqkm, shape_length, streamorde, streamorder_map, streamcalc, geom)
+# get comids (comid_catch)
+comids <- read_csv("data_clean/08_catch_areas_filt_comid.csv") %>%
+  pull(comid_catch)
 
-# fix flowlines comid to factor in correct order
-flowlines <- flowlines %>%
-  mutate(comid_f = factor(as.character(comid),
-                          levels=c(3917198, 3917200, 3917948,
-                                   3917950, 3917244, 3917946)),
-         comid_ff = as.factor(comid))
+# # FLOWLINES: Get Final Little Shasta FLOWLINE -------------------------------------------
 
-# drop sinks (isolated channels)
+# flowlines with VAA data
+flow <- read_rds("data_clean/final_flowlines_w_full_nhd_vaa.rds") %>%
+  select(id:comid, gnis_name:reachcode, ftype:fcode, fromnode:dnhydroseq, ends_with("km"), geom)
+
+length(unique(flow$comid))
+
+# List sink/isolated segments (N=19)
 sinks <- c(3917228, 3917212, 3917214, 3917218, 3917220,
            3917960, 3917958, 3917276, 3917278, 3917274,
            3917282, 3917284, 3917286, 3917280, 3917268,
            3917256, 3917250, 3917272, 3917956)
 
-flowlines_trim <- flowlines %>%
-  filter(!comid %in% sinks)
+# make just sinks vs
+flow_sinks <- flow %>%
+  filter(comid %in% sinks) %>%
+  select(comid, hydroseq, uphydroseq, dnhydroseq, areasqkm, totdasqkm, divdasqkm)
+
+# make trimmed version
+flow_trim <- flow %>%
+  filter(!comid %in% sinks) %>%
+  select(comid, hydroseq, uphydroseq, dnhydroseq, areasqkm, totdasqkm, divdasqkm)
 
 # preview
-mapview(flowlines_trim, zcol="comid_ff", legend=FALSE)
-mapview(flowlines, zcol="comid_ff", legend=FALSE)
+mapview(flow_trim, zcol="comid", legend=FALSE)
+
 
 # Get CATCHMENTS ----------------------------------------------------------
 
@@ -42,12 +50,16 @@ mapview(flowlines, zcol="comid_ff", legend=FALSE)
 
 catch_final <- read_rds("data_clean/catchments_final_lshasta.rds")
 
-mapview(flowlines_trim,  zcol="comid_ff", legend=FALSE) +
-  mapview(catch_final, zcol="comid_f", legend=FALSE)
+# mapview(flowlines_trim,  zcol="comid_ff", legend=FALSE) +
+#   mapview(catch_final, zcol="comid_f", legend=FALSE)
+#
+# # n=33 unique COMIDs
+#(coms <- unique(flowlines_trim$comid))
 
-# n=33 unique COMIDs
-(coms <- unique(flowlines_trim$comid))
+coms <- catch_final %>% filter(FEATUREID %in% comids)
 
+length(unique(coms$FEATUREID))
+length(unique(coms$comid))
 
 # Get KRUG Runoff ------------------------------------
 
@@ -88,21 +100,25 @@ catch_split <- tst %>%
 
 mapview(catch_split, zcol="krug") + mapview(krug_crop, zcol="INCHES")
 
-write_rds(catch_split, file = "data_clean/krug_runoff_little_shasta_sf_poly.rds")
+#write_rds(catch_split, file = "data_clean/krug_runoff_little_shasta_sf_poly.rds")
 
 #catch_split <- read_rds("data_clean/krug_runoff_little_shasta_sf_poly.rds")
 
 # Now Apply to Each COMID  -----------------------------------
 
-flowlines_trim_10 <- st_join(st_transform(flowlines_trim, 5070), catch_split) %>%
-  distinct(comid, .keep_all = TRUE)
-mapview(flowlines_trim_10, zcol="krug") + mapview(krug_crop)
 
-length(unique(flowlines_trim_10$comid))
+
+krug_w_coms <- st_join(st_transform(coms, 5070), catch_split) %>%
+  distinct(FEATUREID, .keep_all = TRUE)
+  #distinct(comid, .keep_all = TRUE)
+mapview(krug_w_coms, zcol="krug") + mapview(krug_crop) +
+  mapview(flow_trim, zcol="comid", legend=FALSE)
+
+length(unique(krug_w_coms$comid))
 
 # make csv of this
-krug_runoff_csv <- flowlines_trim_10 %>% st_drop_geometry() %>%
-  select(COMID=comid, krug_runoff = krug) %>%
+krug_runoff_csv <- krug_w_coms %>% st_drop_geometry() %>%
+  select(COMID=FEATUREID, flowCOMID=comid, krug_runoff = krug) %>%
   mutate(source = "krug_runoff_avg_ann_1951-1980.e00")
 
 write_csv(krug_runoff_csv, file = "data_clean/scibase_flow/KRUG_RUNOFF.csv")
