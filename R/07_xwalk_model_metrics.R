@@ -59,7 +59,9 @@ clim_final <- read_rds("data_clean/06_seas_prism_metrics_for_mod.rds")
 files_needed <- xwalk_join %>% select(source_file) %>%
   filter(!is.na(source_file)) %>% distinct() %>%
   mutate(filepath = glue("{dat_dir}/{source_file}")) %>%
-  filter(!source_file=="NA")
+  filter(!source_file=="NA") %>%
+  # filter out the YYYY files for RUN, TAV, PPT
+  filter(!grepl("YYYY", source_file))
 
 # use purrr to read all in and combine
 dat <- map(files_needed$filepath,
