@@ -21,55 +21,45 @@ clean_list <- get_zip_list(glue("{dat_dir}"), "*csv", recurse = FALSE)
 head(clean_list)
 
 # get xwalk from google drive
-xwalk <- readxl::read_xlsx("data_raw/gsheet_input_var_name_xwalk.xlsx", sheet = 1) %>%
-  clean_names() %>%
-  # drop vars not in model
-  slice(-c(263:270))
-
-# get updated xwalk (manually created)
-xwalk_rev <- read_csv("data_clean/07_model_input_dat_out_xwalk.csv")
+xwalk_join <- readxl::read_xlsx("data_raw/gsheet_input_var_name_xwalk.xlsx", sheet = 2) %>%
+  clean_names()
 
 # get clim data
 clim_final <- read_rds("data_clean/06_seas_prism_metrics_for_mod.rds")
 
-
 # Model Input -------------------------------------------------------------
-
-# model input
-input_sample_clean <- read_csv("data_raw/sample.csv") %>%
-  clean_names()
-
-input_sample <- read_csv("data_raw/sample.csv")
-
-input_sample_clean_names <- names(input_sample_clean) %>% as_tibble() %>% rename("input"=value)
-#write_csv(input_sample_clean_names, file = "data_clean/07_model_input_metric_names_only.csv")
-
-input_sample_names <- names(input_sample) %>% as_tibble() %>% rename("input"=value)
-
-# bind names and use to xwalk back to original model input/output names
-input_mod_xwalk <- cbind(input_sample_names, input_sample_clean_names) %>%
-  rename(mod_names=1, mod_names_clean = 2)
-
-# Join Xwalks -------------------------------------------------------------
-
-xwalk_join <- left_join(xwalk, xwalk_rev, by=c("model_input"="MOD_IN")) %>%
-  #clean
-  select(model_input, dat_output=DAT_OUT, check=CHECK,
-         variable_description, accum_op = accumulation_operation, source_file) %>%
-  # now join with original sample model input names
-  left_join(input_mod_xwalk, by=c("model_input"="mod_names_clean")) %>%
-  select(model_input_clean=model_input, mod_input_raw=mod_names, dat_output:source_file)
-
-#write_csv(xwalk_join, "data_clean/07_final_xwalk_variables.csv")
-
-rm(xwalk, xwalk_rev, input_mod_xwalk, input_sample, input_sample_clean, input_sample_clean_names, input_sample_names)
+#
+# # model input
+# input_sample_clean <- read_csv("data_raw/sample.csv") %>%
+#   clean_names()
+#
+# input_sample <- read_csv("data_raw/sample.csv")
+#
+# input_sample_clean_names <- names(input_sample_clean) %>% as_tibble() %>% rename("input"=value)
+# #write_csv(input_sample_clean_names, file = "data_clean/07_model_input_metric_names_only.csv")
+#
+# input_sample_names <- names(input_sample) %>% as_tibble() %>% rename("input"=value)
+#
+# # bind names and use to xwalk back to original model input/output names
+# input_mod_xwalk <- cbind(input_sample_names, input_sample_clean_names) %>%
+#   rename(mod_names=1, mod_names_clean = 2)
+#
+# # Join Xwalks -------------------------------------------------------------
+#
+# xwalk_join <- left_join(xwalk,input_mod_xwalk, by=c("model_input_clean"="mod_names_clean")) %>%
+#   select(model_input_clean, mod_input_raw=mod_names, dat_output:source_file)
+#
+# #write_csv(xwalk_join, "data_clean/07_final_xwalk_variables.csv")
+#
+# rm(xwalk, xwalk_rev, input_mod_xwalk, input_sample, input_sample_clean, input_sample_clean_names, input_sample_names)
 
 # Get Files Of Interest ---------------------------------------------------
 
 # first pull the non prism data:
 files_needed <- xwalk_join %>% select(source_file) %>%
   filter(!is.na(source_file)) %>% distinct() %>%
-  mutate(filepath = glue("{dat_dir}/{source_file}"))
+  mutate(filepath = glue("{dat_dir}/{source_file}")) %>%
+  filter(!source_file=="NA")
 
 # use purrr to read all in and combine
 dat <- map(files_needed$filepath,
@@ -112,10 +102,9 @@ rm(clim_final, dat)
 dat_sel <- dat_final %>%
   select(any_of(xwalk_join$dat_output))
 
-# two duplicates here:
+# duplicates?
 xwalk_join %>% filter(duplicated(xwalk_join$dat_output))
-# cat_minp6190
-# cat_wtdep
+# cat_wtdep # using one for area weighted avg and one as is (value for catch)
 
 # Write Out ---------------------------------------------------------------
 

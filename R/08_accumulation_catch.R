@@ -5,7 +5,7 @@
 # and calculate the appropriate summary (avg, area weighted avg, min, or max) for
 # each comid (and for each comid we have a lookup to identify all upstream comids)
 
-# need to make sure each catchment comid is present in the dataset to calculate for the watershed...
+# need to make sure each catchment comid is present in the dataset to calculate for the watershed...n=76 unique catchments?
 
 # Libraries ---------------------------------------------------------------
 
@@ -24,9 +24,11 @@ options(scipen = 1e6)
 
 # data by comid
 cat_data <- read_csv("data_clean/07_final_catchment_data_for_accum.csv")
+# length(unique(cat_data$comid)) # n=76 unique
 
 # xwalk
 xwalk <- read_csv("data_clean/07_final_xwalk_variables_revised.csv")
+length(unique(xwalk$dat_output)) # on duplicate, cat_wtdep, but diff calc for each
 
 # Flowlines --------------------------------------------------------------
 
@@ -81,8 +83,8 @@ catch_areas <- left_join(catch_areas, catch_lsh,
 catch_areas_filt <- catch_areas %>%
   filter(comid_flowline %in% flow_trim$comid) # n=76 comids
 
-mapview(catch_areas_filt, zcol="comid_flowline") +
-  mapview(flow_trim, zcol="comid")
+#mapview(catch_areas_filt, zcol="comid_flowline") +
+#  mapview(flow_trim, zcol="comid")
 
 # get total area
 (lsh_area <- sum(catch_areas_filt$area_sf)) # 329.519 sqkm
@@ -94,7 +96,7 @@ catch_areas_filt <- catch_areas_filt %>%
 catch_areas_filt_no_sf <- st_drop_geometry(catch_areas_filt)
 
 # write out and use to filter to comids of interest
-write_csv(catch_areas_filt_no_sf, file = "data_clean/08_catch_areas_filt_comid.csv")
+#write_csv(catch_areas_filt_no_sf, file = "data_clean/08_catch_areas_filt_comid.csv")
 
 # Mapview: Flowlines & Catchments -----------------------------------------
 
@@ -107,69 +109,187 @@ mapview(catch_areas_filt,
   mapview(flow_sinks, color="gray40", lwd=1, layer.name="Sinks to Drop")
 
 
-# Get Network -------------------------------------------------------------
+# Get Network & COMIDs --------------------------------------------------
 
 # get hydro network for u/s routing
 hydroseq_network <- read_csv(here("data_clean/lshasta_hydroseq_network_ds_us.csv"))
 
-# select all variables that need "avg of catch values"
-varnames_avg <- xwalk %>% filter(accum_op=="avg of catchment values") %>%
-  select(dat_output) %>% distinct()
-
 # unlist each hydroseq and make numeric
 hydroseq_ls <- map(hydroseq_network$paths_lst, ~unlist(strsplit(.x, ", "))) %>%
-  map(., ~as.numeric(.x))# %>%
-  #set_names(., hydroseq_network$id_down_up)
-map(hydroseq_ls, length)
+  map(., ~as.numeric(.x))
+map(hydroseq_ls, length) # see diff lengths
 
 # filter: cross walk between hydroseq and comid!
 comid_ls <- map(hydroseq_ls, ~flow_trim %>%
-                     filter(hydroseq %in% .x) %>% pull(comid)) %>%
+                  filter(hydroseq %in% .x) %>% pull(comid)) %>%
   set_names(hydroseq_network$hydroseq)
 
 map(comid_ls, length) # check lengths, 1 is a trib or spur
 # n=33
 
-# make tribs layer (singletons)
+# make tribs layer (singletons) (n=15)
 comid_ls_tribs <- comid_ls %>%
   keep(., ~length(.x)==1)
 
-# make layer for sums using area weighted avg
-comid_ls_awa <- comid_ls %>%
-  keep(., ~length(.x)>1)
+# Classify ACCUMULATION Operations ----------------------------------------
 
-# this returns a comid list, but it's NOT in order of us to downstream, it's ordered numerically smallest to largest. downside to comid vs. hydroseq
+# unique calcs for accum?
+table(xwalk$accum_op, useNA="ifany")
 
-# for every unique year and group of comids, we need the accumulation for that metric
+# organize a bit
+xwalk <- xwalk %>%
+  mutate(accum_op_class = case_when(
+    grepl("area weighted avg", accum_op) ~ "AWA",
+    grepl("avg of catchment", accum_op) ~ "AVG",
+    grepl("sum", accum_op) ~ "SUM",
+    grepl("range", accum_op) ~ "RNG",
+    grepl("^min", accum_op) ~ "MIN",
+    grepl("dominant", accum_op) ~ "DOM",
+    grepl("max", accum_op) ~ "MAX",
+    grepl("none", accum_op) ~ "NONE",
+    is.na(accum_op) ~ "NONE",
+    TRUE ~ accum_op))
 
-# filter to vars
-cat_df <- cat_data %>%
-  # drop the non info vars
-  select(comid:wa_yr, varnames_avg$dat_output)
+table(xwalk$accum_op_class, useNA="ifany")
 
-# filter to dataframe that is list of all comids for a given comid
-dat_out <- map(comid_ls, ~filter(cat_df, comid %in% .x) %>%
-                 select(-c(comid, comid_wy)))
+# some vars are calculated and should be separated
+varnames_calc <- xwalk %>%
+  filter(grepl("^calculated|caculated", check))
 
-# drop zero value items
-#purrr::keep(., ~dim(.x)[1]>0)
-
-# iterate over
-dat_mean <- map(dat_out, ~group_by(.x, wa_yr) %>%
-                summarise(
-                          across(
-                            .cols  = everything(),
-                            .fns   = mean, na.rm=TRUE,
-                            .names = "{col}_mean"
-                          )))
-
-
-# SAVE
-write_rds(dat_mean, file = "data_clean/08_accumulated_mean_metrics.rds")
-
-
-
-# Area Weighted Average ---------------------------------------------------
+# ACCUM: Area Weighted Average ------------------------------------------
 
 #SUM of value * area weight + value * area weight
 
+# select all variables that need "avg of catch values"
+varnames_awa <- xwalk %>%
+  filter(accum_op_class=="AWA") %>%
+  # drop any of the vars_to_calc vars above
+filter(!grepl("^calculated|caculated", check)) %>%
+  select(dat_output) %>% distinct()
+
+# make layer for just non singletons?
+#comid_ls_awa <- comid_ls #%>%
+#  keep(., ~length(.x)>1)
+
+# this returns a comid list, but it's NOT in order of us to downstream, it's ordered numerically smallest to largest. downside to comid vs. hydroseq
+
+# filter to vars
+cat_df_awa <- cat_data %>%
+  # drop the non info vars
+  select(comid:wa_yr, varnames_awa$dat_output) %>%
+  # add area weights
+  left_join(catch_areas_filt_no_sf, by=c("comid"="comid_catch")) %>%
+  select(comid:wa_yr, comid_flowline:upper, everything())
+
+# filter to dataframe that is list of all comids for a given comid
+dat_ls_awa <- map(comid_ls, ~filter(cat_df_awa, comid %in% .x) %>%
+                 select(-c(comid, comid_wy)))
+
+# function to summarize via AWA
+# test:
+#dat_df_awa[[30]] %>% select(wa_yr, comid_flowline, cat_olson_fe, area_sf, area_weight, ppt_jan_wy) %>% filter(wa_yr == 1950) %>% group_by(wa_yr) %>% summarize(across(c(cat_olson_fe, ppt_jan_wy), ~sum(.x*area_weight)))
+
+# iterate over
+dat_awa <- map(dat_ls_awa, ~group_by(.x, wa_yr) %>%
+                  summarise(
+                    across(
+                      .cols  = ppt_jan_wy:krug_runoff,
+                      ~sum(.x*area_weight),
+                      .names = "{col}_awa")
+                    ))
+
+#dat_awa[[30]] %>% filter(wa_yr == 1950) %>% View()
+#dat_df_awa[[30]] %>% filter(wa_yr == 1950) %>% View()
+
+# SAVE (as a list for now, temp)
+write_rds(dat_awa, file = "data_clean/08_accumulated_awa_metrics.rds")
+
+# collapse as dataframe:
+dat_df_awa <- bind_rows(dat_awa, .id = "COMID")
+write_csv(dat_df_awa, file = "data_clean/08_accumulated_awa_metrics.csv")
+
+# ACCUM: MEAN -----------------------------------------------------------
+
+# select all variables that need "avg of catch values"
+varnames_avg <- xwalk %>% filter(accum_op_class=="AVG")
+# just t_avg_basin: average of cat_tav7100_ann
+
+# filter to vars
+cat_df_avg <- cat_data %>%
+  #mutate("t_avg_basin" = NA_real_) %>%
+  # drop the non info vars
+  select(comid:wa_yr, cat_tav7100_ann) %>%
+  # add area weights
+  left_join(catch_areas_filt_no_sf, by=c("comid"="comid_catch")) %>%
+  select(comid:wa_yr, comid_flowline:upper, everything())
+
+# filter to dataframe that is list of all comids for a given comid
+dat_ls_avg <- map(comid_ls, ~filter(cat_df_avg, comid %in% .x) %>%
+                 select(-c(comid, comid_wy)))
+
+# iterate over
+dat_avg <- map(dat_ls_avg, ~group_by(.x, wa_yr) %>%
+                  summarise(
+                    across(
+                      .cols  = cat_tav7100_ann,
+                      .fns   = mean, na.rm=TRUE,
+                      .names = "{col}_mean"
+                    )))
+
+dat_avg[[30]] %>% filter(wa_yr == 1950) %>% View()
+
+# collapse and rename to t_avg_basin
+dat_df_avg <- bind_rows(dat_avg, .id = "COMID") %>%
+  rename(t_avg_basin=cat_tav7100_ann_mean)
+
+# SAVE
+write_rds(dat_avg, file = "data_clean/08_accumulated_avg_metrics.rds")
+write_csv(dat_df_avg, file = "data_clean/08_accumulated_avg_metrics.csv")
+
+
+
+# ACCUM: Max-Min-Range-sum ----------------------------------------------------
+
+# so for all basin based metrics, shouldn't we keep those as is (as they are likely to be the same across all COMIDs? or just average?), and for CATCHMENT based metrics, we would use area weighted avg for everything but max/min/range/sum variables?
+
+# select all variables that need "avg of catch values"
+varnames_oth <- xwalk %>%
+  filter(accum_op_class %in% c("MAX","MIN","RNG","SUM","NONE")) %>%
+  # drop any of the vars_to_calc vars above
+  #filter(!grepl("^calculated|caculated", check)) %>%
+  select(dat_output) %>% distinct()
+
+# filter to vars
+cat_df_oth <- cat_data %>%
+  # drop the non info vars
+  select(comid:wa_yr, varnames_awa$dat_output) %>%
+  # add area weights
+  left_join(catch_areas_filt_no_sf, by=c("comid"="comid_catch")) %>%
+  select(comid:wa_yr, comid_flowline:upper, everything())
+
+# filter to dataframe that is list of all comids for a given comid
+dat_ls_oth <- map(comid_ls, ~filter(cat_df_oth, comid %in% .x) %>%
+                    select(-c(comid, comid_wy)))
+
+# function to summarize via AWA
+# test:
+#dat_df_awa[[30]] %>% select(wa_yr, comid_flowline, cat_olson_fe, area_sf, area_weight, ppt_jan_wy) %>% filter(wa_yr == 1950) %>% group_by(wa_yr) %>% summarize(across(c(cat_olson_fe, ppt_jan_wy), ~sum(.x*area_weight)))
+
+# iterate over
+dat_awa <- map(dat_ls_awa, ~group_by(.x, wa_yr) %>%
+                 summarise(
+                   across(
+                     .cols  = ppt_jan_wy:krug_runoff,
+                     ~sum(.x*area_weight),
+                     .names = "{col}_awa")
+                 ))
+
+#dat_awa[[30]] %>% filter(wa_yr == 1950) %>% View()
+#dat_df_awa[[30]] %>% filter(wa_yr == 1950) %>% View()
+
+# SAVE (as a list for now, temp)
+write_rds(dat_awa, file = "data_clean/08_accumulated_awa_metrics.rds")
+
+# collapse as dataframe:
+dat_df_awa <- bind_rows(dat_awa, .id = "COMID")
+write_csv(dat_df_awa, file = "data_clean/08_accumulated_awa_metrics.csv")

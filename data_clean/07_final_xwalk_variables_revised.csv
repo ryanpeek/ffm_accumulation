@@ -104,7 +104,7 @@ tav_sum1,tav_sum1,tav_sum1,NA,PRISM derived,area weighted avg,NA
 tav_sum2,tav_sum2,tav_sum2,NA,PRISM derived,area weighted avg,NA
 tav_sum3,tav_sum3,tav_sum3,NA,PRISM derived,area weighted avg,NA
 tav_sum4,tav_sum4,tav_sum4,NA,PRISM derived,area weighted avg,NA
-drain_sqkm,DRAIN_SQKM,area_sf,calcuated using sf and revised catch,Drainage area of basin,sum,BASIN_CHAR_CAT_CONUS.csv
+drain_sqkm,DRAIN_SQKM,area_sf,calculated using sf and revised catch,Drainage area of basin,sum,BASIN_CHAR_CAT_CONUS.csv
 slope_pct_30m,SLOPE_PCT_30M,cat_basin_slope,NA,"Mean basin slope, percent. Derived from 30m NHDPlus",area weighted avg,BASIN_CHAR_CAT_CONUS.csv
 elev_mean_m_basin_30m,ELEV_MEAN_M_BASIN_30M,cat_elev_mean,NA,Mean basin elevation (meters) from 30m NHDPlus,area weighted avg,BASIN_CHAR_CAT_CONUS.csv
 elev_min_m_basin_30m,ELEV_MIN_M_BASIN_30M,cat_elev_min,NA,"Minimum basin elevation (meters) from 30m NHDPlus, may include sinks",min,BASIN_CHAR_CAT_CONUS.csv
@@ -132,9 +132,9 @@ hlr18,HLR18,cat_hlr_18,NA,Proportion of basin occupied by HLR x (proportion),are
 hlr19,HLR19,cat_hlr_19,NA,Proportion of basin occupied by HLR x (proportion),area weighted avg,HLR_CAT_CONUS.csv
 hlr20,HLR20,cat_hlr_20,NA,Proportion of basin occupied by HLR x (proportion),area weighted avg,HLR_CAT_CONUS.csv
 pptavg_cat,PPTAVG_CAT,cat_ppt7100_ann,NA,"Mean annual precipitation for catchment, 1971-2000 (mm)",none,PPT7100_ANN_CONUS.csv
-pptavg_basin,PPTAVG_BASIN,pptavg_basin,caculated from cat_ppt7100_ann,"Mean annual precipitation for basin, 1971-2000 (mm)",area weighted avg,PPT7100_ANN_CONUS.csv
+pptavg_basin,PPTAVG_BASIN,pptavg_basin,calculated from cat_ppt7100_ann,"Mean annual precipitation for basin, 1971-2000 (mm)",area weighted avg,PPT7100_ANN_CONUS.csv
 t_avg_cat,T_AVG_CAT,cat_tav7100_ann,NA,"Mean annual temperature for catchment, 1971-2000 (deg C)",none,NHDV2_TMEAN7100_ANN_CONUS.csv
-t_avg_basin,T_AVG_BASIN,t_avg_basin,caculated from cat_tav7100_ann,"Mean annual temperature for basin, 1971-2000 (deg C)",avg of catchment values,NHDV2_TMEAN7100_ANN_CONUS.csv
+t_avg_basin,T_AVG_BASIN,t_avg_basin,calculated from cat_tav7100_ann,"Mean annual temperature for basin, 1971-2000 (deg C)",avg of catchment values,NHDV2_TMEAN7100_ANN_CONUS.csv
 t_min_basin,T_MIN_BASIN,cat_tmin7100,NA,"Mean min monthly temperature for basin, 1971-2000 (deg C)",area weighted avg,TMIN7100_CONUS.csv
 t_max_basin,T_MAX_BASIN,cat_tmax7100,NA,"Mean max monthly temperature for basin, 1971-2000 (deg C)",area weighted avg,TMAX7100_CONUS.csv
 cat_ann_min_precip,CAT_AnnMinPrecip,cat_minp6190,NA,"Min annual precipitation for catchment, 1960-1990 (mm)",none,MINP6190_CONUS.csv
