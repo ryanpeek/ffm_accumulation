@@ -208,45 +208,6 @@ write_rds(dat_awa, file = "data_clean/08_accumulated_awa_metrics.rds")
 dat_df_awa <- bind_rows(dat_awa, .id = "COMID")
 write_csv(dat_df_awa, file = "data_clean/08_accumulated_awa_metrics.csv")
 
-# ACCUM: MEAN -----------------------------------------------------------
-
-# select all variables that need "avg of catch values"
-varnames_avg <- xwalk %>% filter(accum_op_class=="AVG")
-# just t_avg_basin: average of cat_tav7100_ann
-
-# filter to vars
-cat_df_avg <- cat_data %>%
-  #mutate("t_avg_basin" = NA_real_) %>%
-  # drop the non info vars
-  select(comid:wa_yr, cat_tav7100_ann) %>%
-  # add area weights
-  left_join(catch_areas_filt_no_sf, by=c("comid"="comid_catch")) %>%
-  select(comid:wa_yr, comid_flowline:upper, everything())
-
-# filter to dataframe that is list of all comids for a given comid
-dat_ls_avg <- map(comid_ls, ~filter(cat_df_avg, comid %in% .x) %>%
-                 select(-c(comid, comid_wy)))
-
-# iterate over
-dat_avg <- map(dat_ls_avg, ~group_by(.x, wa_yr) %>%
-                  summarise(
-                    across(
-                      .cols  = cat_tav7100_ann,
-                      .fns   = mean, na.rm=TRUE,
-                      .names = "{col}_mean"
-                    )))
-
-dat_avg[[30]] %>% filter(wa_yr == 1950) %>% View()
-
-# collapse and rename to t_avg_basin
-dat_df_avg <- bind_rows(dat_avg, .id = "COMID") %>%
-  rename(t_avg_basin=cat_tav7100_ann_mean)
-
-# SAVE
-write_rds(dat_avg, file = "data_clean/08_accumulated_avg_metrics.rds")
-write_csv(dat_df_avg, file = "data_clean/08_accumulated_avg_metrics.csv")
-
-
 
 # ACCUM: Max-Min-Range-sum ----------------------------------------------------
 
@@ -255,14 +216,15 @@ write_csv(dat_df_avg, file = "data_clean/08_accumulated_avg_metrics.csv")
 # select all variables that need "avg of catch values"
 varnames_oth <- xwalk %>%
   filter(accum_op_class %in% c("MAX","MIN","RNG","SUM","NONE")) %>%
+  filter(!dat_output %in% c("comid", "comid_wy", "wa_yr", "area_sf"))
   # drop any of the vars_to_calc vars above
   #filter(!grepl("^calculated|caculated", check)) %>%
-  select(dat_output) %>% distinct()
+  #select(dat_output) %>% distinct()
 
 # filter to vars
 cat_df_oth <- cat_data %>%
   # drop the non info vars
-  select(comid:wa_yr, varnames_awa$dat_output) %>%
+  select(comid:wa_yr, varnames_oth$dat_output) %>%
   # add area weights
   left_join(catch_areas_filt_no_sf, by=c("comid"="comid_catch")) %>%
   select(comid:wa_yr, comid_flowline:upper, everything())
@@ -271,25 +233,51 @@ cat_df_oth <- cat_data %>%
 dat_ls_oth <- map(comid_ls, ~filter(cat_df_oth, comid %in% .x) %>%
                     select(-c(comid, comid_wy)))
 
-# function to summarize via AWA
-# test:
-#dat_df_awa[[30]] %>% select(wa_yr, comid_flowline, cat_olson_fe, area_sf, area_weight, ppt_jan_wy) %>% filter(wa_yr == 1950) %>% group_by(wa_yr) %>% summarize(across(c(cat_olson_fe, ppt_jan_wy), ~sum(.x*area_weight)))
-
 # iterate over
-dat_awa <- map(dat_ls_awa, ~group_by(.x, wa_yr) %>%
+dat_oth <- map(dat_ls_oth, ~group_by(.x, wa_yr) %>%
                  summarise(
                    across(
-                     .cols  = ppt_jan_wy:krug_runoff,
-                     ~sum(.x*area_weight),
-                     .names = "{col}_awa")
-                 ))
+                     # min cols
+                     .cols  = c(cat_elev_min, cat_minp6190),
+                     ~min(.x),
+                     .names = "{col}_min"),
+                   across(
+                     # max
+                     .cols = c(cat_elev_max, cat_maxp6190),
+                     ~max(.x),
+                     .names = "{col}_max"),
+                   # mean
+                   across(
+                     .cols = c(cat_ppt7100_ann, cat_tav7100_ann,
+                               cat_et, cat_pet, cat_rh, cat_wtdep),
+                     ~mean(.x, na.rm=TRUE),
+                     .names = "{col}_mean"),
+                   across(
+                     .cols = c(area_sf),
+                     ~sum(.x),
+                     .names = "{col}_sum")
+                 )
+)
 
-#dat_awa[[30]] %>% filter(wa_yr == 1950) %>% View()
-#dat_df_awa[[30]] %>% filter(wa_yr == 1950) %>% View()
+# add range after
+dat_oth <- map(dat_oth, ~mutate(.x,
+                                elev_rng = cat_elev_max_max - cat_elev_min_min))
 
-# SAVE (as a list for now, temp)
-write_rds(dat_awa, file = "data_clean/08_accumulated_awa_metrics.rds")
+dat_oth[[30]] %>% filter(wa_yr == 1950) %>% names()
 
-# collapse as dataframe:
-dat_df_awa <- bind_rows(dat_awa, .id = "COMID")
-write_csv(dat_df_awa, file = "data_clean/08_accumulated_awa_metrics.csv")
+# collapse and rename to t_avg_basin
+dat_df_oth <- bind_rows(dat_oth, .id = "COMID") %>%
+  rename(t_avg_basin=cat_tav7100_ann_mean)
+
+# SAVE
+write_rds(dat_df_oth, file = "data_clean/08_accumulated_oth_metrics.rds")
+write_csv(dat_df_oth, file = "data_clean/08_accumulated_oth_metrics.csv")
+
+
+# Combine All -------------------------------------------------------------
+
+dat_out <- left_join(dat_df_awa, dat_df_oth)
+names(dat_out)
+
+
+write_csv(dat_out, file = "data_clean/08_accumulated_all_metrics.csv")
