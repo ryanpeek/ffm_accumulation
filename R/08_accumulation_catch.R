@@ -397,7 +397,12 @@ names_df <- input_sample_names %>% left_join(., xwalk_fin, by=c("inputs"="mod_in
 
 # reorder to match sample
 dat_final2 <- dat_final %>%
-  select(unique(names_df$mod_input_final))
+  select(unique(names_df$mod_input_final)) %>%
+  # filter out years 1945-1949
+  filter(!wa_yr %in% c(1945:1949))
+
+# double check
+dat_final2 %>% group_by(wa_yr) %>% tally() %>% View()
 
 # Write Out ---------------------------------------------------------------
 
