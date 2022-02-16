@@ -65,6 +65,15 @@ length(unique(coms$comid))
 
 # see here: https://water.usgs.gov/GIS/metadata/usgswrd/XML/runoff.xml
 
+# https://water.usgs.gov/GIS/dsdl/runoff.e00.zip
+# get the file:
+download.file("https://water.usgs.gov/GIS/dsdl/runoff.e00.zip", destfile = "data_raw/krug_runoff_avg_ann_1951-1980.e00.zip")
+# unzip
+unzip("data_raw/krug_runoff_avg_ann_1951-1980.e00.zip", exdir = "data_clean/") # makes "runoff.e00"
+# rename
+fs::file_move("data_clean/runoff.e00", new_path = "data_clean/krug_runoff_avg_ann_1951-1980.e00")
+
+
 # read in
 krug <- st_read("data_clean/krug_runoff_avg_ann_1951-1980.e00") %>%
   st_transform(5070)
