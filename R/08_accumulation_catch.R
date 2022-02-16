@@ -354,7 +354,8 @@ rm(dat_eco, cat_df_eco, dat_ls_eco)
 dat_final <- left_join(dat_df_awa, dat_df_oth) %>%
   left_join(dat_df_nocalc) %>%
   left_join(dat_df_eco) %>%
-  select(-hydroseq) # drop
+  select(-hydroseq) %>% # drop
+  mutate(comid_wy = glue("{comid}_{wa_yr}"), .after=comid) # add comid_wa_yr
 
 # RENAME TO MATCH -----------------------------------------
 
@@ -383,7 +384,7 @@ xwalk_fin <- xwalk_final %>% filter(!is.na(mod_input_raw)) %>%
 write_csv(xwalk_fin, file="data_clean/08_accumulated_final_xwalk.csv")
 
 rm(xwalk_final, xwalk_final_sel, xwalk_final_mismatch)
-
+rm(dat_df_eco, dat_df_nocalc, dat_df_oth, dat_df_awa)
 
 # REORDER -----------------------------------------------------------------
 
@@ -394,9 +395,9 @@ input_sample_names <- data.frame("inputs" = names(input_sample))
 names_df <- input_sample_names %>% left_join(., xwalk_fin, by=c("inputs"="mod_input_raw")) %>%
   filter(!is.na(mod_input_final))
 
-
 # reorder to match sample
-dat_final2 <- dat_final %>% select(unique(names_df$mod_input_final))
+dat_final2 <- dat_final %>%
+  select(unique(names_df$mod_input_final))
 
 # Write Out ---------------------------------------------------------------
 

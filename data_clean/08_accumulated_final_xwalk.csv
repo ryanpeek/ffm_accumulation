@@ -1,5 +1,6 @@
 mod_input_final,mod_input_raw,check,accum_op,accum_op_class,source_file,variable_description
 comid,COMID,"NA",none,NONE,"NA",Unique segment identifier used in NHDPlus V2.
+comid_wy,COMID_WY,"NA",none,NONE,"NA",Unique segment identifier used in NHDPlus V2.
 wa_yr,WaYr,"NA",none,NONE,"NA",water year
 ppt_jan_wy,ppt_Jan.wy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,"PRISM derived, 1945-2015"
 ppt_feb_wy,ppt_Feb.wy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM derived
