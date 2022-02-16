@@ -1,0 +1,263 @@
+mod_input_final,mod_input_raw,check,accum_op,accum_op_class,source_file,variable_description
+comid,COMID,"NA",none,NONE,"NA",Unique segment identifier used in NHDPlus V2.
+wa_yr,WaYr,"NA",none,NONE,"NA",water year
+ppt_jan_wy,ppt_Jan.wy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,"PRISM derived, 1945-2015"
+ppt_feb_wy,ppt_Feb.wy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM derived
+ppt_mar_wy,ppt_Mar.wy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM derived
+ppt_apr_wy,ppt_Apr.wy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM derived
+ppt_may_wy,ppt_May.wy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM derived
+ppt_jun_wy,ppt_Jun.wy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM derived
+ppt_jul_wy,ppt_Jul.wy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM derived
+ppt_aug_wy,ppt_Aug.wy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM derived
+ppt_sep_wy,ppt_Sep.wy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM derived
+ppt_oct_wy,ppt_Oct.wy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM derived
+ppt_nov_wy,ppt_Nov.wy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM derived
+ppt_dec_wy,ppt_Dec.wy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM derived
+ppt_jan_pwy,ppt_Jan.pwy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM derived
+ppt_feb_pwy,ppt_Feb.pwy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM derived
+ppt_mar_pwy,ppt_Mar.pwy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM derived
+ppt_apr_pwy,ppt_Apr.pwy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM derived
+ppt_may_pwy,ppt_May.pwy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM derived
+ppt_jun_pwy,ppt_Jun.pwy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM derived
+ppt_jul_pwy,ppt_Jul.pwy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM derived
+ppt_aug_pwy,ppt_Aug.pwy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM derived
+ppt_sep_pwy,ppt_Sep.pwy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM derived
+tav_jan_wy,tav_Jan.wy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_feb_wy,tav_Feb.wy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_mar_wy,tav_Mar.wy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_apr_wy,tav_Apr.wy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_may_wy,tav_May.wy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_jun_wy,tav_Jun.wy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_jul_wy,tav_Jul.wy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_aug_wy,tav_Aug.wy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_sep_wy,tav_Sep.wy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_oct_wy,tav_Oct.wy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_nov_wy,tav_Nov.wy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_dec_wy,tav_Dec.wy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_jan_pwy,tav_Jan.pwy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_feb_pwy,tav_Feb.pwy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_mar_pwy,tav_Mar.pwy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_apr_pwy,tav_Apr.pwy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_may_pwy,tav_May.pwy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_jun_pwy,tav_Jun.pwy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_jul_pwy,tav_Jul.pwy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_aug_pwy,tav_Aug.pwy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_sep_pwy,tav_Sep.pwy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+run_jan_wy,run_Jan.wy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,"Wollock water balance model, based on PRISM (ET, PPT, TEMP)"
+run_feb_wy,run_Feb.wy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,"Wollock water balance model, based on PRISM (ET, PPT, TEMP)"
+run_mar_wy,run_Mar.wy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,"Wollock water balance model, based on PRISM (ET, PPT, TEMP)"
+run_apr_wy,run_Apr.wy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,"Wollock water balance model, based on PRISM (ET, PPT, TEMP)"
+run_may_wy,run_May.wy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,"Wollock water balance model, based on PRISM (ET, PPT, TEMP)"
+run_jun_wy,run_Jun.wy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,"Wollock water balance model, based on PRISM (ET, PPT, TEMP)"
+run_jul_wy,run_Jul.wy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,"Wollock water balance model, based on PRISM (ET, PPT, TEMP)"
+run_aug_wy,run_Aug.wy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,"Wollock water balance model, based on PRISM (ET, PPT, TEMP)"
+run_sep_wy,run_Sep.wy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,"Wollock water balance model, based on PRISM (ET, PPT, TEMP)"
+run_oct_wy,run_Oct.wy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,"Wollock water balance model, based on PRISM (ET, PPT, TEMP)"
+run_nov_wy,run_Nov.wy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,"Wollock water balance model, based on PRISM (ET, PPT, TEMP)"
+run_dec_wy,run_Dec.wy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,"Wollock water balance model, based on PRISM (ET, PPT, TEMP)"
+run_jan_pwy,run_Jan.pwy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,"Wollock water balance model, based on PRISM (ET, PPT, TEMP)"
+run_feb_pwy,run_Feb.pwy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,"Wollock water balance model, based on PRISM (ET, PPT, TEMP)"
+run_mar_pwy,run_Mar.pwy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,"Wollock water balance model, based on PRISM (ET, PPT, TEMP)"
+run_apr_pwy,run_Apr.pwy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,"Wollock water balance model, based on PRISM (ET, PPT, TEMP)"
+run_may_pwy,run_May.pwy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,"Wollock water balance model, based on PRISM (ET, PPT, TEMP)"
+run_jun_pwy,run_Jun.pwy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,"Wollock water balance model, based on PRISM (ET, PPT, TEMP)"
+run_jul_pwy,run_Jul.pwy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,"Wollock water balance model, based on PRISM (ET, PPT, TEMP)"
+run_aug_pwy,run_Aug.pwy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,"Wollock water balance model, based on PRISM (ET, PPT, TEMP)"
+run_sep_pwy,run_Sep.pwy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,"Wollock water balance model, based on PRISM (ET, PPT, TEMP)"
+ppt_ann_wy,ppt_ann.wy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM Monthly Avg (Water Year Oct to Sep)
+ppt_fall_wy,ppt_fall.wy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,"PRISM seasonal avg (Oct, Nov, Dec)"
+ppt_wint_wy,ppt_wint.wy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,"PRISM seasonal avg (Jan, Feb, Mar)"
+ppt_sprg_wy,ppt_sprg.wy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,"PRISM seasonal avg (Apr, May, Jun)"
+ppt_summ_wy,ppt_summ.wy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,"PRISM seasonal avg (Jul, Aug, Sep)"
+ppt_ann_pwy,ppt_ann.pwy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM seasonal avg (previous water year)
+ppt_wint_pwy,ppt_wint.pwy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM seasonal avg (previous water year)
+ppt_sprg_pwy,ppt_sprg.pwy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM seasonal avg (previous water year)
+ppt_summ_pwy,ppt_summ.pwy,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM seasonal avg (previous water year)
+ppt_sum1,ppt_sum1,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM sum1 (ann_wy + ann_pwy)
+ppt_sum2,ppt_sum2,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM sum2 (ann_wy + summ_pwy)
+ppt_sum3,ppt_sum3,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM sum3 (ann_wy + sprg_pwy)
+ppt_sum4,ppt_sum4,"NA",area weighted avg,AWA,PPTYYYY_CAT_CONUS.csv,PRISM sum4 (ann_wy + wint_pwy
+run_ann_wy,run_ann.wy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,Wollock water balance model
+run_fall_wy,run_fall.wy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,Wollock water balance model
+run_wint_wy,run_wint.wy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,Wollock water balance model
+run_sprg_wy,run_sprg.wy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,Wollock water balance model
+run_summ_wy,run_summ.wy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,Wollock water balance model
+run_ann_pwy,run_ann.pwy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,Wollock water balance model
+run_wint_pwy,run_wint.pwy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,Wollock water balance model
+run_sprg_pwy,run_sprg.pwy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,Wollock water balance model
+run_summ_pwy,run_summ.pwy,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,Wollock water balance model
+run_sum1,run_sum1,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,Wollock water balance model
+run_sum2,run_sum2,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,Wollock water balance model
+run_sum3,run_sum3,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,Wollock water balance model
+run_sum4,run_sum4,"NA",area weighted avg,AWA,RUNYYYY_CAT_CONUS.csv,Wollock water balance model
+tav_ann_wy,tav_ann.wy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_fall_wy,tav_fall.wy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_wint_wy,tav_wint.wy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_sprg_wy,tav_sprg.wy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_summ_wy,tav_summ.wy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_ann_pwy,tav_ann.pwy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_wint_pwy,tav_wint.pwy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_sprg_pwy,tav_sprg.pwy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_summ_pwy,tav_summ.pwy,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_sum1,tav_sum1,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_sum2,tav_sum2,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_sum3,tav_sum3,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+tav_sum4,tav_sum4,"NA",area weighted avg,AWA,TAVYYYY_CAT_CONUS.csv,PRISM derived
+cat_basin_slope,SLOPE_PCT_30M,"NA",area weighted avg,AWA,BASIN_CHAR_CAT_CONUS.csv,"Mean basin slope, percent. Derived from 30m NHDPlus"
+cat_elev_mean,ELEV_MEAN_M_BASIN_30M,"NA",area weighted avg,AWA,BASIN_CHAR_CAT_CONUS.csv,Mean basin elevation (meters) from 30m NHDPlus
+cat_hlr_1,HLR1,"NA",area weighted avg,AWA,HLR_CAT_CONUS.csv,Proportion of basin occupied by HLR x (proportion)
+cat_hlr_2,HLR2,"NA",area weighted avg,AWA,HLR_CAT_CONUS.csv,Proportion of basin occupied by HLR x (proportion)
+cat_hlr_3,HLR3,"NA",area weighted avg,AWA,HLR_CAT_CONUS.csv,Proportion of basin occupied by HLR x (proportion)
+cat_hlr_4,HLR4,"NA",area weighted avg,AWA,HLR_CAT_CONUS.csv,Proportion of basin occupied by HLR x (proportion)
+cat_hlr_5,HLR5,"NA",area weighted avg,AWA,HLR_CAT_CONUS.csv,Proportion of basin occupied by HLR x (proportion)
+cat_hlr_6,HLR6,"NA",area weighted avg,AWA,HLR_CAT_CONUS.csv,Proportion of basin occupied by HLR x (proportion)
+cat_hlr_7,HLR7,"NA",area weighted avg,AWA,HLR_CAT_CONUS.csv,Proportion of basin occupied by HLR x (proportion)
+cat_hlr_8,HLR8,"NA",area weighted avg,AWA,HLR_CAT_CONUS.csv,Proportion of basin occupied by HLR x (proportion)
+cat_hlr_9,HLR9,"NA",area weighted avg,AWA,HLR_CAT_CONUS.csv,Proportion of basin occupied by HLR x (proportion)
+cat_hlr_10,HLR10,"NA",area weighted avg,AWA,HLR_CAT_CONUS.csv,Proportion of basin occupied by HLR x (proportion)
+cat_hlr_11,HLR11,"NA",area weighted avg,AWA,HLR_CAT_CONUS.csv,Proportion of basin occupied by HLR x (proportion)
+cat_hlr_12,HLR12,"NA",area weighted avg,AWA,HLR_CAT_CONUS.csv,Proportion of basin occupied by HLR x (proportion)
+cat_hlr_13,HLR13,"NA",area weighted avg,AWA,HLR_CAT_CONUS.csv,Proportion of basin occupied by HLR x (proportion)
+cat_hlr_14,HLR14,"NA",area weighted avg,AWA,HLR_CAT_CONUS.csv,Proportion of basin occupied by HLR x (proportion)
+cat_hlr_15,HLR15,"NA",area weighted avg,AWA,HLR_CAT_CONUS.csv,Proportion of basin occupied by HLR x (proportion)
+cat_hlr_16,HLR16,"NA",area weighted avg,AWA,HLR_CAT_CONUS.csv,Proportion of basin occupied by HLR x (proportion)
+cat_hlr_17,HLR17,"NA",area weighted avg,AWA,HLR_CAT_CONUS.csv,Proportion of basin occupied by HLR x (proportion)
+cat_hlr_18,HLR18,"NA",area weighted avg,AWA,HLR_CAT_CONUS.csv,Proportion of basin occupied by HLR x (proportion)
+cat_hlr_19,HLR19,"NA",area weighted avg,AWA,HLR_CAT_CONUS.csv,Proportion of basin occupied by HLR x (proportion)
+cat_hlr_20,HLR20,"NA",area weighted avg,AWA,HLR_CAT_CONUS.csv,Proportion of basin occupied by HLR x (proportion)
+pptavg_basin,PPTAVG_BASIN,calculated from cat_ppt7100_ann,area weighted avg,AWA,PPT7100_ANN_CONUS.csv,"Mean annual precipitation for basin, 1971-2000 (mm)"
+cat_tmin7100,T_MIN_BASIN,"NA",area weighted avg,AWA,TMIN7100_CONUS.csv,"Mean min monthly temperature for basin, 1971-2000 (deg C)"
+cat_tmax7100,T_MAX_BASIN,"NA",area weighted avg,AWA,TMAX7100_CONUS.csv,"Mean max monthly temperature for basin, 1971-2000 (deg C)"
+ann_min_precip_basin,AnnMinPrecip,calculated from cat_minp6190,area weighted avg,AWA,MINP6190_CONUS.csv,"Min annual precipitation for basin, 1960-1990 (mm)"
+ann_max_precip_basin,AnnMaxPrecip,calculated from cat_maxp6190,area weighted avg,AWA,MAXP6190_CONUS.csv,"Max annual precipitation for basin, 1960-1990 (mm)"
+cat_wdjan,WD_JAN_BASIN,"NA",area weighted avg,AWA,WD6190_CAT_CONUS.csv,"Mean number of days with precipitation in basin for January, PRISM (1961-1990)"
+cat_wdfeb,WD_FEB_BASIN,"NA",area weighted avg,AWA,WD6190_CAT_CONUS.csv,"Mean number of days with precipitation in basin for Feb, PRISM (1961-1990)"
+cat_wdmar,WD_MAR_BASIN,"NA",area weighted avg,AWA,WD6190_CAT_CONUS.csv,etc.
+cat_wdapr,WD_APR_BASIN,"NA",area weighted avg,AWA,WD6190_CAT_CONUS.csv,etc.
+cat_wdmay,WD_MAY_BASIN,"NA",area weighted avg,AWA,WD6190_CAT_CONUS.csv,etc.
+cat_wdjun,WD_JUN_BASIN,"NA",area weighted avg,AWA,WD6190_CAT_CONUS.csv,etc.
+cat_wdjul,WD_JUL_BASIN,"NA",area weighted avg,AWA,WD6190_CAT_CONUS.csv,etc.
+cat_wdaug,WD_AUG_BASIN,"NA",area weighted avg,AWA,WD6190_CAT_CONUS.csv,etc.
+cat_wdsep,WD_SEP_BASIN,"NA",area weighted avg,AWA,WD6190_CAT_CONUS.csv,etc.
+cat_wdoct,WD_OCT_BASIN,"NA",area weighted avg,AWA,WD6190_CAT_CONUS.csv,etc.
+cat_wdnov,WD_NOV_BASIN,"NA",area weighted avg,AWA,WD6190_CAT_CONUS.csv,etc.
+cat_wddec,WD_DEC_BASIN,"NA",area weighted avg,AWA,WD6190_CAT_CONUS.csv,etc.
+cat_cwd,ANN_CONS_WETDAYS,"NA",area weighted avg,AWA,CWD_CONUS.csv,"Basin mean annual number of consecutive days with measureable precipitation, PRISM (1961-1990)"
+cat_wdann,WD_BASIN,"NA",area weighted avg,AWA,WDANN_CONUS.csv,"Basin mean annual number of days with precipitation, PRISM (1961-1990)"
+cat_minwd6190,WDMIN_BASIN,"NA",area weighted avg,AWA,MINWD6190_CONUS.csv,"Basin mean min annual number of days with precipitation, PRISM (1961-1990)"
+cat_maxwd6190,WDMAX_BASIN,"NA",area weighted avg,AWA,MAXWD6190_CONUS.csv,"Basin mean max annual number of days with precipitation, PRISM (1961-1990)"
+et_basin,ET,calculated from cat_et,area weighted avg,AWA,NA,"Basin mean annual evapotranspiration, mm/yr."
+pet_basin,PET,calculated from cat_pet,area weighted avg,AWA,NA,"Basin mean potential annual evapotranspiration, mm/yr (PRISM 1971-2000)."
+rh_basin,RH_BASIN,calculated from cat_rh,area weighted avg,AWA,RH_CONUS.csv,"Basin mean relative humidity (%), derived from PRISM (1971-2000)."
+cat_prsnow,SNOW_PCT_PRECIP,"NA",area weighted avg,AWA,PRSNOW_CONUS.csv,"Basin mean of snow percent of total precipitation estimate, mean for period 1901-2000."
+cat_fstfz6190,FST32F_BASIN,"NA",area weighted avg,AWA,FSTFZ6190_CONUS.csv,"Basin average of mean day of the year of first freeze, derived from 30 years of record (1961-1990), 2km PRISM. For example, value of 300 is the 300th day of the year (Oct 27th)."
+cat_lstfz6190,LST32F_BASIN,"NA",area weighted avg,AWA,LSTFZ6190_CONUS.csv,"Basin average of mean day of the year of last freeze, derived from 30 years of record (1961-1990), 2km PRISM.  For example, value of 100 is the 100th day of the year (April 10th)."
+cat_contact,CONTACT,"NA",area weighted avg,AWA,CONTACT_CONUS.csv,Subsurface flow contact time index. The subsurface contact time index estimates the number of days that infiltrated water resides in the saturated subsurface zone of the basin before discharging into the stream.
+cat_bfi,BFI_AVE,"NA",area weighted avg,AWA,BFI_CONUS.csv,"Base Flow Index (BFI), The BFI is a ratio of base flow to total streamflow, expressed as a percentage and ranging from 0 to 100. Base flow is the sustained, slowly varying component of streamflow, usually attributed to ground-water discharge to a stream."
+cat_twi,TOPWET,"NA",area weighted avg,AWA,TWI_CONUS.csv,"Topographic wetness index, ln(a/S); where ""ln"" is the natural log, ""a"" is the upslope area per unit contour length and ""S"" is the slope at that point.  See http://ks.water.usgs.gov/Kansas/pubs/reports/wrir.99-4242.html and Wolock and McCabe, 1995 for more detail"
+cat_satof,PERDUN,"NA",area weighted avg,AWA,SATOF_CONUS.csv,"Dunne overland flow, also know as saturation overland flow, is generated in a basin when the water table ""outcrops"" on the land surface (due to the infiltration and redistribution of soil moisture within the basin), thereby producing temporary saturated areas. These saturated areas generate Dunne overland flow through exfiltration of shallow ground water and by routing precipitation directly to the stream network."
+cat_rfact,RFACT,"NA",area weighted avg,AWA,STATSGO_LAYER_CAT_CONUS.csv,"Rainfall and Runoff factor (""R factor"" of Universal Soil Loss Equation); average annual value for period 1971-2000"
+cat_ieof,PERHOR,"NA",area weighted avg,AWA,IEOF_CONUS.csv,"Horton overland flow, also known as infiltration-excess overland flow, is generated in a basin when infiltration rates are exceeded by precipitation rates."
+cat_siltave,SILTAVE,"NA",area weighted avg,AWA,STATSGO_TEXT_CAT_CONUS.csv,Average value of silt content in basin (percentage)
+cat_clayave,CLAYAVE,"NA",area weighted avg,AWA,STATSGO_TEXT_CAT_CONUS.csv,Average value of clay content in basin (percentage)
+cat_sandave,SANDAVE,"NA",area weighted avg,AWA,STATSGO_TEXT_CAT_CONUS.csv,Average value of sand content in basin (percentage)
+cat_hga,HGA,"NA",area weighted avg,AWA,STATSGO_HYDGRP_CAT_CONUS.csv,"Percentage of soils in hydrologic group A. Hydrologic group A soils have high infiltration rates. Soils are deep and well drained and, typically, have high sand and gravel content."
+cat_hgac,HGAC,"NA",area weighted avg,AWA,STATSGO_HYDGRP_CAT_CONUS.csv,Percentage of soils in hydrologic group A/C. Hydrologic group A/C soils have group A characteristics (high infiltration rates) when artificially drained and have group C characteristics (slow infiltration rates) when not drained.
+cat_hgad,HGAD,"NA",area weighted avg,AWA,STATSGO_HYDGRP_CAT_CONUS.csv,Percentage of soils in hydrologic group A/D. Hydrologic group A/D soils have group A characteristics (high infiltration rates) when artificially drained and have group D characteristics (very slow infiltration rates) when not drained.
+cat_hgb,HGB,"NA",area weighted avg,AWA,STATSGO_HYDGRP_CAT_CONUS.csv,"Percentage of soils in hydrologic group B. Hydrologic group B soils have moderate infiltration rates. Soils are moderately deep, moderately well drained, and moderately coarse in texture."
+cat_hgbc,HGBC,"NA",area weighted avg,AWA,STATSGO_HYDGRP_CAT_CONUS.csv,Percentage of soils in hydrologic group B/C. Hydrologic group B/C soils have group B characteristics (moderate infiltration rates) when artificially drained and have group C characteristics (slow infiltration rates) when not drained.
+cat_hgbd,HGBD,"NA",area weighted avg,AWA,STATSGO_HYDGRP_CAT_CONUS.csv,Percentage of soils in hydrologic group B/D. Hydrologic group B/D soils have group B characteristics (moderate infiltration rates) when artificially drained and have group D characteristics (very slow infiltration rates) when not drained.
+cat_hgc,HGC,"NA",area weighted avg,AWA,STATSGO_HYDGRP_CAT_CONUS.csv,"Percentage of soils in hydrologic group C. Hydrologic group C soils have slow soil inflitration rates. The soil profiles include layers impeding downward movement of water and, typically, have moderately fine or fine texture."
+cat_hgcd,HGCD,"NA",area weighted avg,AWA,STATSGO_HYDGRP_CAT_CONUS.csv,Percentage of soils in hydrologic group C/D. Hydrologic group C/D soils have group C characteristics (slow infiltration rates) when artificially drained and have group D characteristics (very slow infiltration rates) when not drained.
+cat_hgd,HGD,"NA",area weighted avg,AWA,STATSGO_HYDGRP_CAT_CONUS.csv,"Percentage of soils in hydrologic group D. Hydrologic group D soils have very slow infiltration rates. Soils are clayey, have a high water table, or have a shallow impervious layer."
+cat_hgvar,HGVAR,"NA",area weighted avg,AWA,STATSGO_HYDGRP_CAT_CONUS.csv,Percentage of soils in hydrologic group VAR. Hydrologic group VAR soils have variable drainage characteristics.
+cat_kfact_up,KFACT_UP,"NA",area weighted avg,AWA,STATSGO_LAYER_CAT_CONUS.csv,Average K-factor value for the uppermost soil horizon in each soil component. K-factor is an erodibility factor which quantifies the susceptibility of soil particles to detachment and movement by water. The K-factor is used in the Universal Soil Loss Equation (USLE) to estimate soil loss by water. Higher values of K-factor indicate greater potential for erosion
+cat_no10ave,NO10AVE,"NA",area weighted avg,AWA,STATSGO_LAYER_CAT_CONUS.csv,Average value of percent by weight of soil material less than 3 inches in size and passing a No. 10 sieve (2 mm)
+cat_no200ave,NO200AVE,"NA",area weighted avg,AWA,STATSGO_LAYER_CAT_CONUS.csv,Average value of percent by weight of soil material less than 3 inches in size and passing a No. 200 sieve (.074 mm)
+cat_no4ave,NO4AVE,"NA",area weighted avg,AWA,STATSGO_LAYER_CAT_CONUS.csv,Average value of percent by weight of soil material less than 3 inches in size and passing a No. 4 sieve (5 mm)
+cat_om,OMAVE,"NA",area weighted avg,AWA,STATSGO_LAYER_CAT_CONUS.csv,Average value of organic matter content (percent by weight)
+cat_permave,PERMAVE,"NA",area weighted avg,AWA,STATSGO_LAYER_CAT_CONUS.csv,Average permeability (inches/hour)
+cat_rockdep,ROCKDEPAVE,"NA",area weighted avg,AWA,STATSGO_LAYER_CAT_CONUS.csv,Average value of total soil thickness examined (inches)
+cat_bdave,BDAVE,"NA",area weighted avg,AWA,STATSGO_LAYER_CAT_CONUS.csv,Average value of bulk density (grams per cubic centimeter)
+cat_awcave,AWCAVE,"NA",area weighted avg,AWA,STATSGO_LAYER_CAT_CONUS.csv,Average value for the range of available water capacity for the soil layer or horizon (inches of water per inches of soil depth)
+wtdepave,WTDEPAVE,calculated from cat_wtdep,area weighted avg,AWA,STATSGO_LAYER_CAT_CONUS.csv,Average value of depth to seasonally high water table (feet)
+cat_bushreed1,gneiss,"NA",area weighted avg,AWA,BUSHREED_CAT_CONUS.csv,Percent of watershed composed of geology class according to Reed & Bush (2001).
+cat_bushreed2,granitic,"NA",area weighted avg,AWA,BUSHREED_CAT_CONUS.csv,Percent of watershed composed of geology class according to Reed & Bush (2001).
+cat_bushreed3,ultramafic,"NA",area weighted avg,AWA,BUSHREED_CAT_CONUS.csv,Percent of watershed composed of geology class according to Reed & Bush (2001).
+cat_bushreed4,quarternary,"NA",area weighted avg,AWA,BUSHREED_CAT_CONUS.csv,Percent of watershed composed of geology class according to Reed & Bush (2001).
+cat_bushreed5,sedimentary,"NA",area weighted avg,AWA,BUSHREED_CAT_CONUS.csv,Percent of watershed composed of geology class according to Reed & Bush (2001).
+cat_bushreed6,volcanic,"NA",area weighted avg,AWA,BUSHREED_CAT_CONUS.csv,Percent of watershed composed of geology class according to Reed & Bush (2001).
+cat_bushreed8,water,"NA",area weighted avg,AWA,BUSHREED_CAT_CONUS.csv,Percent of watershed composed of geology class according to Reed & Bush (2001).
+cat_bushreed9,anorthositic,"NA",area weighted avg,AWA,BUSHREED_CAT_CONUS.csv,Percent of watershed composed of geology class according to Reed & Bush (2001).
+cat_bushreed10,intermediate,"NA",area weighted avg,AWA,BUSHREED_CAT_CONUS.csv,Percent of watershed composed of geology class according to Reed & Bush (2001).
+cat_hunt1,SGEO1,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,Percent of watershed composed of surficial geology (Hunt 1979): Sea islands
+cat_hunt2,SGEO2,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,Coral
+cat_hunt3,SGEO3,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,Backshore deposits
+cat_hunt4,SGEO4,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,Pre-Wisconsinan drift
+cat_hunt5,SGEO5,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,"Till, or ground moraine"
+cat_hunt6,SGEO6,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,"Ice-laid deposits, like tg but mostly sand and silt"
+cat_hunt7,SGEO7,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,"Thin ice-laid deposits, like ts but thin and discontinuous.  Extensive exposure of underlying Cretaceous- and Tertiary-age formations"
+cat_hunt8,SGEO8,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,Deposits of mountain glaciers
+cat_hunt9,SGEO9,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,"Gravel, sand and clay deposited by glacial streams adjacent to  or downstream from temporary ice fronts"
+cat_hunt10,SGEO10,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,Floodplain and alluvium gravel terraces
+cat_hunt11,SGEO11,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,Fan gravels
+cat_hunt12,SGEO12,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,Fan sands
+cat_hunt13,SGEO13,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,Pliocene-age and older stream deposits on the Great Plains
+cat_hunt14,SGEO14,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,Lake deposits
+cat_hunt15,SGEO15,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,"Sand sheets, mostly with dunes or sand mounds at surface"
+cat_hunt16,SGEO16,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,Sand sheets on sandy and gravelly Ogallala Formation in southern Great Plains
+cat_hunt17,SGEO17,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,Wisconsinan loess
+cat_hunt18,SGEO18,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,Deeply weathered loess
+cat_hunt19,SGEO19,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,Basalt
+cat_hunt20,SGEO20,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,Bedrock
+cat_hunt21,SGEO21,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,"Micaceous residuum without much quartz; clay,  mostly kaolinite"
+cat_hunt22,SGEO22,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,"Residuum with abundant quartz; much less mica than rsh, but equal to clay"
+cat_hunt23,SGEO23,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,Clay residuum with little mica or quartz; mostly massive kaolinitic clay
+cat_hunt24,SGEO24,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,"Red clay, massive clay that is generally kaolinitic"
+cat_hunt25,SGEO25,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,"Cherty red clay; similar to rls, but with chert from the parent rock"
+cat_hunt26,SGEO26,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,"Residuum on Triassic-age formations; depths less than most other saprolite, reddish color, largely inherited from from parent rock"
+cat_hunt27,SGEO27,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,"Sandy residuum, derived by intensive weathering of sandstone formations. Sand locally is in dunes"
+cat_hunt28,SGEO28,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,"Clay residuum that swells when wet; developed by weathering  of poorly consolidated shale, containing the clay mineral montmorillonite, generally less than 10 feet"
+cat_hunt29,SGEO29,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,"Loam; texture variable, ranging from sand to clay, mostly  non-swelling clay mineral, kaolinite; otherwise similar to rc"
+cat_hunt30,SGEO30,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,"Intensively weathered upper Tertiary- and Quaternary-age gravels; thickness generally less than 30 feet,  distribution not completely known"
+cat_hunt31,SGEO31,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,"Phosphatic clay; poorly sorted clay and phosphate pebbles or nodules in sandy matrix. Thickness 10 to 50 feet, commonly overlain by loose sand. Major source of phosphate fertilizer"
+cat_hunt32,SGEO32,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,Sandy or silty residuum; probably includes loess. Depth generally less than 10 feet
+cat_hunt33,SGEO33,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,Silt on limestone; probably includes considerable loess; extensive bare rock
+cat_hunt34,SGEO34,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,Sandy ground; mostly on poorly consolidated sandstone  formations
+cat_hunt35,SGEO35,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,"Shaley or sandy ground; on mixed sandstone and shale formations; where shaley, contains considerable swelling clay"
+cat_hunt36,SGEO36,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,"Sandy gypsiferous ground; many sinks, local dunes; vegetation scanty or lacking where there is much gypsum or other salt"
+cat_hunt37,SGEO37,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,Clayey ground on weathered Permian- and/or Triassic-age red beds
+cat_hunt38,SGEO38,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,"Marshes, swamps, peat deposits; only locally thicker than 12 feet"
+cat_hunt39,SGEO39,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,"Sandy coastal ground with organic layer over a shallow water  table, ground water podsols"
+cat_hunt40,SGEO40,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,Sandy and stony colluvium derived mostly from sandstone and shale
+cat_hunt41,SGEO41,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,"Stony colluvium on limestone; considerable admixed silt,  possibly of loess origin"
+cat_hunt42,SGEO42,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,Stony colluvium on metamorphic rocks; less silt and clay than in co/ls
+cat_hunt43,SGEO43,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,Colluvium on volcanic rocks
+cat_hunt44,SGEO44,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,Bouldery and sandy colluvium on granitic rocks
+cat_hunt45,SGEO45,"NA",area weighted avg,AWA,HUNT_CAT_CONUS.csv,Clayey and loamy colluvium; on poorly consolidated rocks on  lee sides of Pacific Coast Ranges
+cat_olson_k,KO_pct,"NA",area weighted avg,AWA,OLSON_CAT_CONUS.csv,Mean watershed percent Potassium Oxide concentration of lithology (percent).
+cat_olson_cao,CaO_pct,"NA",area weighted avg,AWA,OLSON_CAT_CONUS.csv,Mean watershed percent Calcium Oxide concentration of lithology (percent).
+cat_olson_fe,FeO_pct,"NA",area weighted avg,AWA,OLSON_CAT_CONUS.csv,Mean watershed percent Iron Oxide concentration of lithology (percent).
+cat_olson_mgo,MgO_pct,"NA",area weighted avg,AWA,OLSON_CAT_CONUS.csv,Mean watershed percent Magnesium Oxide concentration of lithology (percent).
+cat_olson_p,P_pct,"NA",area weighted avg,AWA,OLSON_CAT_CONUS.csv,Mean watershed percent Phosphorus concentration of lithology (percent).
+cat_olson_s,S_pct,"NA",area weighted avg,AWA,OLSON_CAT_CONUS.csv,Mean watershed percent Sulfur concentration of lithology (percent).
+cat_olson_si,SiO_pct,"NA",area weighted avg,AWA,OLSON_CAT_CONUS.csv,Mean watershed percent Silica Oxide concentration of lithology (percent).
+cat_olson_ucs,UCS,"NA",area weighted avg,AWA,OLSON_CAT_CONUS.csv,"Mean watershed Rock Uniaxial Compressive Strength, megaPascals."
+cat_olson_perm,Lperm,"NA",area weighted avg,AWA,OLSON_CAT_CONUS.csv,Mean watershed rock hydraulic conductivity (x10^6 meters / second).
+cat_rechg,RECHARGE,"NA",area weighted avg,AWA,RECHG_CONUS.csv,"Mean watershed annual natural groundwater recharge,days."
+krug_runoff,KRUG_RUNOFF,"NA",area weighted avg,AWA,KRUG_RUNOFF.csv,"based on polyline coverage of average annual runoff in the conterminous
+United States, 1951-1980 (in), Gebert, W.A., Graczyk, D.J., and Krug, W.R. 1987"
+cat_elev_min,ELEV_MIN_M_BASIN_30M,"NA",min,MIN,BASIN_CHAR_CAT_CONUS.csv,"Minimum basin elevation (meters) from 30m NHDPlus, may include sinks"
+cat_elev_max,ELEV_MAX_M_BASIN_30M,"NA",max,MAX,BASIN_CHAR_CAT_CONUS.csv,Maximum basin elevation (meters) from 30m NHDPlus
+t_avg_basin,T_AVG_BASIN,calculated from cat_tav7100_ann,avg of catchment values,AVG,NHDV2_TMEAN7100_ANN_CONUS.csv,"Mean annual temperature for basin, 1971-2000 (deg C)"
+area_sf,DRAIN_SQKM,calculated using sf and revised catch,sum,SUM,BASIN_CHAR_CAT_CONUS.csv,Drainage area of basin
+elv_rng,ElvRng,"NA",range,RNG,BASIN_CHAR_CAT_CONUS.csv,Difference between maximum and minimum basin elevation
+eco3,ECO3,"NA","highest freq, identify dominant represented",DOM,ECOL3_DOM_CONUS.csv,Dominant ecoregion 3 landscape region in which the basin occurs
+pptavg_cat,PPTAVG_CAT,"NA",none,NONE,PPT7100_ANN_CONUS.csv,"Mean annual precipitation for catchment, 1971-2000 (mm)"
+t_avg_cat,T_AVG_CAT,"NA",none,NONE,NHDV2_TMEAN7100_ANN_CONUS.csv,"Mean annual temperature for catchment, 1971-2000 (deg C)"
+ann_min_precip,AnnMinPrecip,calculated from cat_minp6190,area weighted avg,AWA,MINP6190_CONUS.csv,"Min annual precipitation for basin, 1960-1990 (mm)"
+ann_max_precip,AnnMaxPrecip,calculated from cat_maxp6190,area weighted avg,AWA,MAXP6190_CONUS.csv,"Max annual precipitation for basin, 1960-1990 (mm)"
+et_cat,ET_CAT,"NA",none,NONE,ET_CONUS.csv,"Catchment mean annual evapotranspiration, mm/yr."
+pet_cat,PET_CAT,"NA",none,NONE,PET_CONUS.csv,"Catchment mean potential annual evapotranspiration, mm/yr (PRISM 1971-2000)."
+rh_cat,RH_CAT,"NA",none,NONE,RH_CONUS.csv,"Catchment mean relative humidity (%), derived from PRISM (1971-2000)."
+depth_wattab,DEPTH_WATTAB,"duplicate, use as is",none,NONE,STATSGO_LAYER_CAT_CONUS.csv,Estimated catchment mean depth to water table in meters

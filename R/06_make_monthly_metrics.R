@@ -21,7 +21,7 @@ cat_df <- read_rds("data_clean/05_lsh_scibase_mon_raw_ppt_tav_run.rds")
 # need to match format of input sample for models
 input_sample <- read_csv("data_raw/sample.csv") %>%
   clean_names()
-
+length(unique(colnames(input_sample)))
 # make name vector from sample model input
 input_names <- names(input_sample) %>% as_tibble() %>% rename("input"=value)
 
